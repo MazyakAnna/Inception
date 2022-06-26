@@ -1,0 +1,52 @@
+version: "3.9"
+
+services:
+  db:
+    build:
+      context: ./srcs/requirements/mariadb
+      dockerfile: Dockerfile
+    container_name: MariaBD
+    #command:
+    voulmes:
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: qwerty
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: bmaegan
+      MYSQL_PASSWORD: 12345
+
+  wp:
+    depends-on:
+      - db
+    image: wordpress:latest
+    volumes:
+      - ./mariadb/conf/wp_data:/var/www/html
+    #build: .
+    ports:
+      - "8080:80"
+    restart: always
+      #links:
+      #  - redis
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wp
+      WORDPRESS_DB_PASSWORD: qwerty123
+      WORDPRESS_DB_NAME: wordpress
+
+  nginx:
+    build: ./srcs/requirements/nginx/
+    ports: 443:443
+    restart: always
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      - PMA_ARBITRARY=1
+
+volumes:
+  db_data: {}
+  wordpress_data: {}
