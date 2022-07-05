@@ -1,14 +1,7 @@
-FROM debian:<version>
+FROM debian:buster
 
-COPY ./tools /mariabd
+RUN apt update
 
-WORKDIR /mariabd
+RUN apt -y install mariabd-server
 
-EXPOSE 8080
-
-RUN apt-get MariaBD
-
-CMD ["cmd1", "cmd2"]
-
-#ENTRYPOINT
-
+EXPOSE 80 443

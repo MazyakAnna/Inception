@@ -1,6 +1,12 @@
-FROM
+FROM debian:buster
 
-EXPOSE 423
+RUN apt update -y
+
+RUN apt -y install nginx
+
+EXPOSE 80 423
+
+COPY ./tools/nginx.conf /usr/local/etc/nginx
 
 ENTRYPOINT
 
