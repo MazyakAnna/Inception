@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  nginx:
+    build:
+#      depends_on:
+#      - wordpress
+      context: .
+      dockerfile: requirements/nginx/Dockerfile
+    container_name: nginx
+    ports:
+      - "443:443"
+    volumes:
+      - ./requirements/nginx/conf/:/etc/nginx/http.d/
+      - ./requirements/nginx/tools/cert/:/etc/ssl/
+      - ./index/:/var/www/
+    restart: always
