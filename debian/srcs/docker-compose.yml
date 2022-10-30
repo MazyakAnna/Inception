@@ -1,65 +1,74 @@
-version: '3'
+version: "3.9"
 
 services:
-  nginx:
+  db:
     build:
-#      depends_on:
-#      - wordpress
-      context: .
-      dockerfile: requirements/nginx/Dockerfile
-    container_name: nginx
-    ports:
-      - "443:443"
-    volumes:
-      - ./requirements/nginx/conf/:/etc/nginx/http.d/
-      - ./requirements/nginx/tools/cert/:/etc/ssl/
-      - ./index/:/var/www/
-    restart: always
-  mariadb:
-    build:
-      context: .
-      dockerfile: requirements/mariadb/Dockerfile
-      args:
-        WP_DB_NAME: ${WP_DB_NAME}
-        DB_USER: ${DB_USER}
-        DB_PWD: ${DB_PWD}
-        DB_ROOT_PWD: ${DB_ROOT_PWD}
-    container_name: mariadb
-    ports:
-      - "3306:3306"
+      context: ./srcs/requirements/mariadb
+      dockerfile: Dockerfile
+    container_name: MariaDB
+    #command:
+    voulmes:
+      - db_data:/var/lib/mysql
+    #restart: always
+    restart: unless-stopped
+    #env_file: .env
+    environment:
+      MYSQL_ROOT_PASSWORD: qwerty
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: bmaegan
+      MYSQL_PASSWORD: 12345
     networks:
-      - inception
-    restart: always
-  wordpress:
-    build:
-      context: .
-      dockerfile: requirements/wordpress/Dockerfile
-      args:
-        WP_DB_NAME: ${WP_DB_NAME}
-        DB_USER: ${DB_USER}
-        DB_PWD: ${DB_PWD}
+      - app-network
+
+  wp:
+    depends-on:
+      - db
     container_name: wordpress
-    depends_on:
-      - mariadb
+    volumes:
+      - ./mariadb/conf/wp_data:/var/www/html
+    build:
+      context: ./srcs/requirements/wordpress
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+    env_file: .env
+      #links:
+      #  - redis
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wp
+      WORDPRESS_DB_PASSWORD: qwerty123
+      WORDPRESS_DB_NAME: wordpress
     networks:
-      - inception
+      - app-network
+
+  nginx:
+    depends_on:
+      - wp
+    container_name: nginx
+    build: ./srcs/requirements/nginx/
+    ports: 443:443
     restart: always
     volumes:
-      - wp-volume:/var/www/
+      - wordpress_data:/var/www/html
+      - ./nginx-conf:/etc/nginx/conf.d
+    networks:
+      - app-network
+
+        #  phpmyadmin:
+        #    image: phpmyadmin
+        #    restart: always
+        #    ports:
+        #      - 8080:80
+        #    environment:
+        #      - PMA_ARBITRARY=1
 
 volumes:
-  wp-volume:
-    driver_opts:
-      o: bind
-      type: none
-      device: /home/${USER}/data/wordpress
-
-  db-volume:
-    driver_opts:
-      o: bind
-      type: none
-      device: /home/${USER}/data/mariadb
+  db_data: {}
+  wordpress_data: {}
 
 networks:
-    inception:
-        driver: bridge
+  app-network:
+    driver: bridge
+
