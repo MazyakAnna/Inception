@@ -15,3 +15,51 @@ services:
       - ./requirements/nginx/tools/cert/:/etc/ssl/
       - ./index/:/var/www/
     restart: always
+  mariadb:
+    build:
+      context: .
+      dockerfile: requirements/mariadb/Dockerfile
+      args:
+        WP_DB_NAME: ${WP_DB_NAME}
+        DB_USER: ${DB_USER}
+        DB_PWD: ${DB_PWD}
+        DB_ROOT_PWD: ${DB_ROOT_PWD}
+    container_name: mariadb
+    ports:
+      - "3306:3306"
+    networks:
+      - inception
+    restart: always
+  wordpress:
+    build:
+      context: .
+      dockerfile: requirements/wordpress/Dockerfile
+      args:
+        WP_DB_NAME: ${WP_DB_NAME}
+        DB_USER: ${DB_USER}
+        DB_PWD: ${DB_PWD}
+    container_name: wordpress
+    depends_on:
+      - mariadb
+    networks:
+      - inception
+    restart: always
+    volumes:
+      - wp-volume:/var/www/
+
+volumes:
+  wp-volume:
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/${USER}/data/wordpress
+
+  db-volume:
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/${USER}/data/mariadb
+
+networks:
+    inception:
+        driver: bridge
