@@ -4,14 +4,8 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
 
         chown -R mysql:mysql /var/lib/mysql
 
-        # mysql_install_db initializes the MySQL data directory 
-	#     and creates the system tables that it contains, if they do not exist
-	# --user: user that mysqld (mysql server) runs as
-	# --basedir: installation dir; --datadir: data dir;
-        mysql_install_db --user=mysql \
-		--basedir=/usr \
-		--datadir=/var/lib/mysql \
-	#	--rpm
+        # init database
+        mysql_install_db --basedir=/usr --datadir=/var/lib/mysql --user=mysql --rpm
 
         tfile=`mktemp`
         if [ ! -f "$tfile" ]; then
