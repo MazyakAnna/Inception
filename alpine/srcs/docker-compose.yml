@@ -2,19 +2,23 @@ version: '3'
 
 services:
   nginx:
+    depends_on:
+      - wordpress
     build:
-#      depends_on:
-#      - wordpress
       context: .
       dockerfile: requirements/nginx/Dockerfile
     container_name: nginx
     ports:
       - "443:443"
+    networks:
+      - inception
     volumes:
       - ./requirements/nginx/conf/:/etc/nginx/http.d/
       - ./requirements/nginx/tools/cert/:/etc/ssl/
-      - ./index/:/var/www/
+      - wp-volume:/var/www/
+#      - ./index/:/var/www/
     restart: always
+
   mariadb:
     build:
       context: .
@@ -30,6 +34,7 @@ services:
     networks:
       - inception
     restart: always
+
   wordpress:
     build:
       context: .
@@ -47,18 +52,84 @@ services:
     volumes:
       - wp-volume:/var/www/
 
+  redis:
+    build:
+      context: .
+      dockerfile: requirements/bonus/redis/Dockerfile
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - inception
+    restart: always
+
+  adminer:
+    build:
+      context: .
+      dockerfile: requirements/bonus/adminer/Dockerfile
+    container_name: adminer
+    depends_on:
+      - mariadb
+    ports:
+      - "8080:8080"
+    networks:
+     - inception
+    restart: always
+
+  phpmyadmin:
+    build:
+      context: .
+      dockerfile: requirements/bonus/phpmyadmin/Dockerfile
+    container_name: phpmyadmin
+    depends_on:
+      - mariadb
+    ports:
+      - "3307:3307"
+    networks:
+     - inception
+    restart: always
+
+  website:
+    build:
+      context: .
+      dockerfile: requirements/bonus/website/Dockerfile
+    container_name: website
+    ports:
+      - "80:80"
+    restart: always
+
+  ftpserver:
+    build:
+      context: .
+      dockerfile: requirements/bonus/ftpserver/Dockerfile
+      args:
+        FTP_PWD: ${FTP_PWD}
+    container_name: ftpserver
+    ports:
+      - "42:42"
+    volumes:
+      - wp-volume:/var/www/
+    networks:
+     - inception
+    restart: always
+
+
 volumes:
   wp-volume:
+#    external: true
+    driver: local
     driver_opts:
       o: bind
       type: none
-      device: /home/${USER}/data/wordpress
-
+      device: /home/bmaegan/data/wordpress
   db-volume:
+#    external: true
+    driver: local
     driver_opts:
       o: bind
       type: none
-      device: /home/${USER}/data/mariadb
+      device: /home/bmaegan/data/mariadb
+
 
 networks:
     inception:
