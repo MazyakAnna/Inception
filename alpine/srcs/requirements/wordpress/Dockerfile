@@ -1,6 +1,5 @@
 FROM alpine:3.16
-ARG PHP_VERSION=8 \
-    WP_DB_NAME \
+ARG WP_DB_NAME \
     DB_USER \
     DB_PWD
 RUN apk update && apk upgrade && apk add --no-cache \
