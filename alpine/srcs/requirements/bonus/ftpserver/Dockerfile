@@ -20,6 +20,6 @@ RUN echo "allow_writeable_chroot=YES" >> /etc/vsftpd/vsftpd.conf &&\
 
 WORKDIR /var/www
 
-EXPOSE 42
+EXPOSE 23
 
 CMD [ "/usr/sbin/vsftpd", "/etc/vsftpd/vsftpd.conf" ]
