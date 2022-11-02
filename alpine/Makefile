@@ -1,29 +1,40 @@
 name = inception
+
 user = bmaegan
+basic_services = nginx wordpress mariadb
+bonus_services = website phpmyadmin adminer redis ftpserver
 
 all:
 	@printf "${name}: Docker compose up...\n"
-	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d
+	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d ${basic_services}
+
+bonus:
+	@printf "${name}: Docker compose build and up with bonus...\n"
+	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d --build
 
 build:
 	@printf "${name}: Docker compose build...\n"
-	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d --build
+	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d --build ${basic_services}
 
 down:
 	@printf "${name}: stop and tear down all your non external volumes...\n"
 	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env down
-	
-start:
-	@printf "${name}: Docker compose start...\n"
-	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env start
-	
-start:
-	@printf "${name}: Docker compose stop...\n"
-	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env stop
 
 re:
 	@printf "${name}: Rebuilding...\n"
-	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d --build
+	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d --build ${basic_services}
+
+start:
+	@printf "${name}: Docker compose start...\n"
+	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env start ${basic_services}
+
+startbonus:
+	@printf "${name}: Docker compose start...\n"
+	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env start
+
+stop:
+	@printf "${name}: Docker compose stop...\n"
+	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env stop
 
 clean: down
 	@printf "${name}: Cleaning (docker system prune -a)...\n"
