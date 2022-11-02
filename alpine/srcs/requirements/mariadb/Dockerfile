@@ -2,11 +2,13 @@ from alpine:3.16
 
 ARG WP_DB_NAME \
     DB_USER \
-    DB_PWD
+    DB_PWD \
+    DB_ADMIN \
+    DB_ROOT_PWD
 
 RUN apk update && apk add --no-cache mariadb mariadb-client
 
-#TODO: change this
+
 RUN mkdir /var/run/mysqld; \
     chmod 777 /var/run/mysqld; \
     { echo '[mysqld]'; \
@@ -21,7 +23,8 @@ RUN mysql_install_db --user=mysql --datadir=/var/lib/mysql
 
 EXPOSE 3306
 
-COPY requirements/mariadb/conf/create_db.sh .
+COPY conf/create_db.sh .
 RUN sh create_db.sh && rm create_db.sh
 USER mysql
-CMD ["/usr/bin/mysqld", "--skip-log-error"]
+CMD ["/usr/bin/mysqld"]
+#CMD ["/usr/bin/mysqld", "--skip-log-error"]

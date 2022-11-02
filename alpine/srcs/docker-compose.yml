@@ -2,12 +2,12 @@ version: '3'
 
 services:
   nginx:
+    container_name: nginx
     depends_on:
       - wordpress
     build:
       context: .
       dockerfile: requirements/nginx/Dockerfile
-    container_name: nginx
     ports:
       - "443:443"
     networks:
@@ -19,15 +19,16 @@ services:
     restart: always
 
   mariadb:
+    container_name: mariadb
     build:
-      context: .
-      dockerfile: requirements/mariadb/Dockerfile
+      context: ./requirements/mariadb/.
+      dockerfile: Dockerfile
       args:
         WP_DB_NAME: ${WP_DB_NAME}
+        DB_ADMIN: ${DB_ADMIN}
         DB_USER: ${DB_USER}
         DB_PWD: ${DB_PWD}
         DB_ROOT_PWD: ${DB_ROOT_PWD}
-    container_name: mariadb
     ports:
       - "3306:3306"
     networks:
@@ -89,16 +90,16 @@ services:
     restart: always
 
   website:
-  container_name: website
+    container_name: website
     build:
       context: .
       dockerfile: requirements/bonus/website/Dockerfile
-  ports:
+    ports:
       - "80:80"
-  restart: always
+    restart: always
 
   ftpserver:
-  container_name: ftpserver
+    container_name: ftpserver
     build:
       context: .
       dockerfile: requirements/bonus/ftpserver/Dockerfile

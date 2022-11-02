@@ -4,9 +4,10 @@ user = bmaegan
 basic_services = nginx wordpress mariadb
 bonus_services = website phpmyadmin adminer redis ftpserver
 
+
 all:
 	@printf "${name}: Docker compose up...\n"
-	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d ${basic_services}
+	@docker-compose -f ./srcs/docker-compose.yml --env-file ./srcs/.env up -d ${basic_services}
 
 bonus:
 	@printf "${name}: Docker compose build and up with bonus...\n"
@@ -44,9 +45,9 @@ clean: down
 fclean:
 	@printf "${name}: Cleaning everything\n"
 	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env down
-	@docker stop $$(docker ps -qa)
-	@docker rm $$(docker ps -qa)
-	@docker rmi $$(docker images -qa)
+	@if [ $(docker ps -q) ]; then docker stop $$(docker ps -q); else echo "NO CONTAINERS TO STOP"; fi;
+	@if [ $(docker ps -qa) ]; then docker rm $$(docker ps -qa); else echo "NO CONTAINERS TO DELETE"; fi;
+	@if [ $(docker images -qa) ]; then docker rmi $(docker images -qa); else echo "NO IMAGES TO DELETE"; fi;
 	@docker system prune --all --force --volumes
 	@docker network prune --force
 	@docker volume prune --force
