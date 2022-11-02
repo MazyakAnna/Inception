@@ -16,7 +16,6 @@ services:
       - ./requirements/nginx/conf/:/etc/nginx/http.d/
       - ./requirements/nginx/tools/cert/:/etc/ssl/
       - wp-volume:/var/www/
-#      - ./index/:/var/www/
     restart: always
 
   mariadb:
@@ -36,6 +35,9 @@ services:
     restart: always
 
   wordpress:
+    container_name: wordpress
+    depends_on:
+      - mariadb
     build:
       context: .
       dockerfile: requirements/wordpress/Dockerfile
@@ -43,20 +45,17 @@ services:
         WP_DB_NAME: ${WP_DB_NAME}
         DB_USER: ${DB_USER}
         DB_PWD: ${DB_PWD}
-    container_name: wordpress
-    depends_on:
-      - mariadb
     networks:
       - inception
-    restart: always
     volumes:
       - wp-volume:/var/www/
+    restart: always
 
   redis:
+    container_name: redis
     build:
       context: .
       dockerfile: requirements/bonus/redis/Dockerfile
-    container_name: redis
     ports:
       - "6379:6379"
     networks:
@@ -64,12 +63,12 @@ services:
     restart: always
 
   adminer:
-    build:
-      context: .
-      dockerfile: requirements/bonus/adminer/Dockerfile
     container_name: adminer
     depends_on:
       - mariadb
+    build:
+      context: .
+      dockerfile: requirements/bonus/adminer/Dockerfile
     ports:
       - "8080:8080"
     networks:
@@ -77,12 +76,12 @@ services:
     restart: always
 
   phpmyadmin:
-    build:
-      context: .
-      dockerfile: requirements/bonus/phpmyadmin/Dockerfile
     container_name: phpmyadmin
     depends_on:
       - mariadb
+    build:
+      context: .
+      dockerfile: requirements/bonus/phpmyadmin/Dockerfile
     ports:
       - "3307:3307"
     networks:
@@ -90,23 +89,23 @@ services:
     restart: always
 
   website:
+  container_name: website
     build:
       context: .
       dockerfile: requirements/bonus/website/Dockerfile
-    container_name: website
-    ports:
+  ports:
       - "80:80"
-    restart: always
+  restart: always
 
   ftpserver:
+  container_name: ftpserver
     build:
       context: .
       dockerfile: requirements/bonus/ftpserver/Dockerfile
       args:
         FTP_PWD: ${FTP_PWD}
-    container_name: ftpserver
     ports:
-      - "42:42"
+      - "21:21"
     volumes:
       - wp-volume:/var/www/
     networks:
