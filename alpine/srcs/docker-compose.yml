@@ -105,7 +105,7 @@ services:
       args:
         FTP_PWD: ${FTP_PWD}
     ports:
-      - "21:21"
+      - "23:23"
     volumes:
       - wp-volume:/var/www/
     networks:
