@@ -1,30 +1,44 @@
-name = CONTAINER_NAME
+name = inception
+user = bmaegan
 
 all:
-	@printf "Starting containers (docker compose UP) ${name}...\n"
-	@docker-compose -f ./srcs/docker-compose.yml up -d
+	@printf "${name}: Docker compose up...\n"
+	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d
 
 build:
-        @printf "Docker-compose BUILD for containers ${name}...\n"
-        @docker-compose -f ./srcs/docker-compose.yml up -d --build
+	@printf "${name}: Docker compose build...\n"
+	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d --build
 
 down:
-	@printf "SHUTTING DOWN containers  ${name}...\n"
-        @docker-compose -f ./srcs/docker-compose.yml down
+	@printf "${name}: stop and tear down all your non external volumes...\n"
+	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env down
+	
+start:
+	@printf "${name}: Docker compose start...\n"
+	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env start
+	
+start:
+	@printf "${name}: Docker compose stop...\n"
+	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env stop
 
 re:
-	@printf "REBUILDING containers  ${name}...\n"
-        @docker-compose -f ./srcs/docker-compose.yml up -d --build
+	@printf "${name}: Rebuilding...\n"
+	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d --build
 
 clean: down
-	@printf "REMOVE ALL UNUSED containers, networks, images for ${name}"
+	@printf "${name}: Cleaning (docker system prune -a)...\n"
 	@docker system prune -a
+	@sudo rm -rf /home/${user}/wordpress/*
 
 fclean:
-	@printf "STOP all containers, PRUNE volumes and networks"
+	@printf "${name}: Cleaning everything\n"
+	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env down
 	@docker stop $$(docker ps -qa)
+	@docker rm $$(docker ps -qa)
+	@docker rmi $$(docker images -qa)
 	@docker system prune --all --force --volumes
 	@docker network prune --force
 	@docker volume prune --force
+	@sudo rm -rf ~/wordpress/*
 
-.PHONY all build down re clean fclean
+.PHONY	: all build down re clean fclean start stop
