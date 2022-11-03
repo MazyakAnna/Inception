@@ -18,22 +18,22 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
         fi
 fi
 
-# https://wordpress.org/support/article/creating-database-for-wordpress/
-if [ ! -d "/var/lib/mysql/$MYSQL_DATABASE" ]; then
+if [ ! -d "/var/lib/mysql/$WP_DB_NAME" ]; then
 
         cat << EOF > /tmp/create_db.sql
-USE mysql;
 FLUSH PRIVILEGES;
-DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
-ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
+CREATE DATABASE ${WP_DB_NAME};
 FLUSH PRIVILEGES;
-CREATE DATABASE $MYSQL_DATABASE;
-CREATE USER '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';
-GRANT ALL PRIVILEGES ON ${MYSQL_DARABASE}.* TO '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';;
+CREATE USER '${DB_ADMIN}'@'localhost' IDENTIFIED BY '${DB_ROOT_PWD}';
 FLUSH PRIVILEGES;
-CREATE USER 'readonly_user'@'%' IDENTIFID BY '1';
-GRANT SELECT, SHOW VIEW ON ${MYSQL_DATABASE}.* TO 'readonly_user'@'%' IDENTIFIED BY '1';
+GRANT ALL PRIVILEGES ON *.* TO '${DB_ADMIN}'@'%' WITH GRANT OPTION;
 FLUSH PRIVILEGES;
+CREATE USER '${DB_USER}'@'localhost' IDENTIFIED BY '${DB_PWD}';
+FLUSH PRIVILEGES;
+GRANT ALL PRIVILEGES ON ${WP_DB_NAME}.* TO '${DB_USER}'@'%';
+FLUSH PRIVILEGES;
+-- ALTER USER 'root'@'localhost' IDENTIFIED BY '{DB_ROOT_PWD}';
+-- FLUSH PRIVILEGES;
 EOF
         # run init.sql
         /usr/bin/mysqld --user=mysql --bootstrap < /tmp/create_db.sql

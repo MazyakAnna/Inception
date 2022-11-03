@@ -15,24 +15,28 @@ services:
     volumes:
       - ./requirements/nginx/conf/:/etc/nginx/http.d/
       - ./requirements/nginx/tools/cert/:/etc/ssl/
-      - wp-volume:/var/www/
+      - wp_volume:/var/www/
     restart: always
 
   mariadb:
     container_name: mariadb
     build:
-      context: ./requirements/mariadb/.
-      dockerfile: Dockerfile
-      args:
-        WP_DB_NAME: ${WP_DB_NAME}
-        DB_ADMIN: ${DB_ADMIN}
-        DB_USER: ${DB_USER}
-        DB_PWD: ${DB_PWD}
-        DB_ROOT_PWD: ${DB_ROOT_PWD}
+      context: .
+      dockerfile: ./requirements/mariadb/Dockerfile
+#      args:
+    environment:
+        MYSQL_DATABASE: ${MYSQL_DATABASE}
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    expose:
+      - 3306
     ports:
       - "3306:3306"
     networks:
       - inception
+    volumes:
+      - mysql_volume:/var/lib/mysql
     restart: always
 
   wordpress:
@@ -43,13 +47,19 @@ services:
       context: .
       dockerfile: requirements/wordpress/Dockerfile
       args:
-        WP_DB_NAME: ${WP_DB_NAME}
-        DB_USER: ${DB_USER}
-        DB_PWD: ${DB_PWD}
+        WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
+        WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
+        WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+        WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+        WORDPRESS_TABLE_PREFIX: ${WORDPRESS_TABLE_PREFIX}
+        DOMAIN_NAME: ${DOMAIN_NAME}
+    ports:
+     - "9000:9000"
     networks:
       - inception
     volumes:
-      - wp-volume:/var/www/
+      - wp_volume:/var/www/
+#      - wp_volume:/var/www/html
     restart: always
 
   redis:
@@ -108,21 +118,21 @@ services:
     ports:
       - "23:23"
     volumes:
-      - wp-volume:/var/www/
+      - wp_volume:/var/www/
     networks:
      - inception
     restart: always
 
 
 volumes:
-  wp-volume:
+  wp_volume:
 #    external: true
     driver: local
     driver_opts:
       o: bind
       type: none
       device: /home/bmaegan/data/wordpress
-  db-volume:
+  mysql_volume:
 #    external: true
     driver: local
     driver_opts:
