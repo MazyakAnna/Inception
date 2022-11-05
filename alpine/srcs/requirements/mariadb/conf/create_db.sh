@@ -42,6 +42,7 @@ FLUSH PRIVILEGES ;
 
 EOF
 
+cat -e $tfile
 
 	/usr/bin/mysqld --user=mysql --bootstrap --verbose=0 --skip-name-resolve --skip-networking=0 < $tfile
 #	rm -f $tfile
