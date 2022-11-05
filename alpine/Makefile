@@ -21,6 +21,9 @@ down:
 	@printf "${name}: stop and tear down all your non external volumes...\n"
 	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env down
 
+logs:
+	@docker-compose -f ./srcs/docker-compose.yml logs
+
 re:
 	@printf "${name}: Rebuilding...\n"
 	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env up -d --build ${basic_services}
@@ -51,7 +54,8 @@ fclean:
 	@docker system prune --all --force --volumes
 	@docker network prune --force
 	@docker volume prune --force
-	@sudo rm -rf ~/wordpress/*
-	@sudo rm -rf /home/${user}/mariadb/*
+	@sudo rm -rf /home/bmaegan/wordpress/*
+	@sudo rm -rf /home/bmaegan/mariadb/*
+	@sudo rm -rf /home/bmaegan/mariadb/.*
 
 .PHONY	: all build down re clean fclean start stop

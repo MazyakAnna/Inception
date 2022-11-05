@@ -5,17 +5,15 @@ services:
     container_name: nginx
     depends_on:
       - wordpress
-    build:
-      context: .
-      dockerfile: requirements/nginx/Dockerfile
+    build: requirements/nginx
     ports:
       - "443:443"
     networks:
       - inception
     volumes:
-      - ./requirements/nginx/conf/:/etc/nginx/http.d/
-      - ./requirements/nginx/tools/cert/:/etc/ssl/
-      - wp_volume:/var/www/
+#      - ./requirements/nginx/conf/:/etc/nginx/http.d/
+#      - ./requirements/nginx/tools/cert/:/etc/ssl/
+      - wp_volume:/var/www/html/
     restart: always
 
   mariadb:
