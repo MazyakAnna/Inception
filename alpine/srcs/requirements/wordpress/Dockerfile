@@ -30,16 +30,16 @@ RUN apk update && apk upgrade && apk add --no-cache \
     sed -i "s|;listen.owner = nobody|listen.owner = nobody|g" /etc/php8/php-fpm.d/www.conf && \
     sed -i "s|;listen.group = nobody|listen.group = nobody|g" /etc/php8/php-fpm.d/www.conf && \
     # sed -i "s|;daemonize = yes|daemonize = no|g" /etc/php8/php-fpm.conf && \
-    # mkdir /var/www/html/wp && \
+    mkdir -p /var/www/html/wordpress && \
     rm -f /var/cache/apk/*
 
 WORKDIR /var/www/html
 
-RUN wget https://wordpress.org/latest.zip && \
-    unzip latest.zip && \
-    # cp -rf wordpress/* . && \
+RUN wget https://wordpress.org/latest.zip --directory-prefix=tmp && \
+    unziptmp/latest.zip && \
+    cp -rf tmp/wordpress/* wordpress/* . && \
     chmod 777 wordpress/ && \
-    rm -rf latest.zip
+    rm -rf tmp
 
 EXPOSE 9000
 
