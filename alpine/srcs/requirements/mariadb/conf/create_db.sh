@@ -15,7 +15,7 @@ else
 	chown -R mysql:mysql /var/lib/mysql
 	mysql_install_db --user=mysql --ldata=/var/lib/mysql > /dev/null
 
-	sql_script='script.sql'
+	sql_script='mktemp'
 	if [ ! -f "$sql_script" ]; then
 	    return 1
 	fi
