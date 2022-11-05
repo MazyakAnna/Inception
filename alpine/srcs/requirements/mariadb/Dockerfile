@@ -7,17 +7,16 @@ ARG MYSQL_DATABASE \
     MYSQL_PASSWORD \
     HOSTNAME
 
-COPY requirements/mariadb/conf/create_db.sh /tmp/create_db.sh
+EXPOSE 3306
 
 RUN apk update; \
     apk upgrade; \
     apk add --no-cache mariadb mariadb-client mariadb-server-utils && \
-    rm -rf /var/cache/apk/* && chmod -R 755 /tmp/create_db.sh
+    rm -rf /var/cache/apk/*
 
-EXPOSE 3306
-#COPY requirements/mariadb/conf/db.sh db.sh
-#RUN sh db.sh
+COPY requirements/mariadb/conf/create_db.sh /tmp/create_db.sh
 
-RUN sh /tmp/create_db.sh
-ENTRYPOINT ["/usr/bin/mysqld", "--user=mysql",  "--console", "--skip-name-resolve", "--skip-networking=0"]
+RUN chmod -R 755 /tmp/create_db.sh && sh /tmp/create_db.sh
 
+ENTRYPOINT ["/usr/bin/mysqld"]
+CMD ["--user=mysql",  "--console", "--skip-name-resolve", "--skip-networking=0"]

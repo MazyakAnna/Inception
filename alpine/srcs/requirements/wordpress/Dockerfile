@@ -1,5 +1,6 @@
 # https://wordpress.org/support/article/how-to-install-wordpress/
 # https://wiki.alpinelinux.org/wiki/WordPress
+# https://wordpress.org/support/article/creating-database-for-wordpress/#using-the-mysql-client
 
 FROM alpine:3.16
 
@@ -12,6 +13,8 @@ ARG WORDPRESS_DB_HOST \
     WORDPRESS_TITLE \
     WORDPRESS_ADMIN_USER \
     WORDPRESS_ADMIN_PASSWORD
+
+EXPOSE 9000
 
 RUN apk update && apk upgrade && apk add --no-cache \
     php8 \
@@ -33,26 +36,20 @@ RUN apk update && apk upgrade && apk add --no-cache \
     sed -i "s|;listen.owner = nobody|listen.owner = nobody|g" /etc/php8/php-fpm.d/www.conf && \
     sed -i "s|;listen.group = nobody|listen.group = nobody|g" /etc/php8/php-fpm.d/www.conf && \
     # sed -i "s|;daemonize = yes|daemonize = no|g" /etc/php8/php-fpm.conf && \
-    # mkdir -p /var/www/html/wordpress && \
     rm -f /var/cache/apk/*
 
 WORKDIR /var/www/html/
 
 RUN wget https://wordpress.org/latest.zip && \
     unzip latest.zip && \
-    # cp -rf wordpress/* . && \
     chmod 777 wordpress/ && \
     rm -rf latest.zip
 
-EXPOSE 9000
-
-# https://wordpress.org/support/article/creating-database-for-wordpress/#using-the-mysql-client
-
 COPY ./conf/add_wp-config.sh add_wp-config.sh
 
-RUN sh add_wp-config.sh && rm add_wp-config.sh
-RUN chmod -R 0777 /var/www/html/wordpress/wp-content/
-# RUN chmod +x /usr/local/bin/wp
+RUN sh add_wp-config.sh && \
+    rm add_wp-config.sh && \
+    chmod -R 777 wordpress/wp-content/
 
-#-F flag == no demonize
+#   -F flag = no demonize
 CMD ["/usr/sbin/php-fpm8", "-F"]

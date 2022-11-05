@@ -11,8 +11,6 @@ services:
     networks:
       - inception
     volumes:
-#      - ./requirements/nginx/conf/:/etc/nginx/http.d/
-#      - ./requirements/nginx/tools/cert/:/etc/ssl/
       - wp_volume:/var/www/html
     restart: always
 
@@ -27,13 +25,12 @@ services:
         MYSQL_USER: ${MYSQL_USER}
         MYSQL_PASSWORD: ${MYSQL_PASSWORD}
         HOSTNAME: ${MYSQL_HOSTNAME}
-    # ports:
-    #   - "3306:3306"
+    ports:
+      - "3306:3306"
     networks:
       - inception
     volumes:
       - mysql_volume:/var/lib/mysql
- #     - mysql_volume:/etc/mysql
     restart: always
 
   wordpress:
@@ -52,12 +49,11 @@ services:
         WORDPRESS_TITLE: ${WORDPRESS_TITLE}
         WORDPRESS_ADMIN_USER: ${WORDPRESS_ADMIN_USER}
         WORDPRESS_ADMIN_PASSWORD: ${WORDPRESS_ADMIN_PASSWORD}
-    # ports:
-    #  - "9000:9000"
+    ports:
+     - "9000:9000"
     networks:
       - inception
     volumes:
-#      - wp_volume:/var/www/
       - wp_volume:/var/www/html
     restart: always
 
@@ -132,7 +128,6 @@ volumes:
       type: none
       device: /home/bmaegan/data/wordpress
   mysql_volume:
-#    external: true
     driver: local
     driver_opts:
       o: bind

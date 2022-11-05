@@ -18,16 +18,14 @@ else
 	mysql_install_db --user=mysql --ldata=/var/lib/mysql > /dev/null
 
 
-	tfile=`mktemp`
-	if [ ! -f "$tfile" ]; then
+	sql_script=`script.sql`
+	if [ ! -f "$sql_script" ]; then
 	    return 1
 	fi
 
-	cat << EOF > $tfile
+	cat << EOF > $sql_script
 USE mysql ;
 FLUSH PRIVILEGES ;
-
-#DROP DATABASE IF EXISTS test ;
 
 GRANT ALL ON *.* TO 'root'@'%' identified by '$MYSQL_ROOT_PASSWORD' WITH GRANT OPTION ;
 GRANT ALL ON *.* TO 'root'@'localhost' identified by '$MYSQL_ROOT_PASSWORD' WITH GRANT OPTION ;
@@ -41,27 +39,8 @@ CREATE USER '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';
 GRANT ALL PRIVILEGES ON *.* TO '$MYSQL_USER'@'localhost';
 GRANT ALL PRIVILEGES ON *.* TO '$MYSQL_USER'@'%';
 FLUSH PRIVILEGES ;
-
 EOF
-
-cat -e $tfile
-
-	/usr/bin/mysqld --user=mysql --bootstrap --verbose=0 --skip-name-resolve --skip-networking=0 < $tfile
-#	rm -f $tfile
-
+	/usr/bin/mysqld --user=mysql --bootstrap --verbose=0 --skip-name-resolve --skip-networking=0 < $sql_script
+	rm -f $sql_script
 fi
-
-# 			*.sql)    echo "$0: running $f"; /usr/bin/mysqld --user=mysql --bootstrap --verbose=0 --skip-name-resolve --skip-networking=0 < "$f"; echo ;;
-# 			*.sql.gz) echo "$0: running $f"; gunzip -c "$f" | /usr/bin/mysqld --user=mysql --bootstrap --verbose=0 --skip-name-resolve --skip-networking=0 < "$f"; echo ;;
-# 			*)        echo "$0: ignoring or entrypoint initdb empty $f" ;;
-# 		esac
-# 		echo
-# 	done
-
-# 	echo
-# 	echo 'MySQL init process done. Ready for start up.'
-# 	echo
-
-# 	echo "exec /usr/bin/mysqld --user=mysql --console --skip-name-resolve --skip-networking=0" "$@"
-
 
