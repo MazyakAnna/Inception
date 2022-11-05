@@ -49,7 +49,7 @@ COPY ./conf/add_wp-config.sh add_wp-config.sh
 
 RUN sh add_wp-config.sh && rm add_wp-config.sh
 RUN chmod -R 0777 /var/www/html/wordpress/wp-content/
-RUN chmod +x /usr/local/bin/wp
+# RUN chmod +x /usr/local/bin/wp
 
 #-F flag == no demonize
 CMD ["/usr/sbin/php-fpm8", "-F"]
