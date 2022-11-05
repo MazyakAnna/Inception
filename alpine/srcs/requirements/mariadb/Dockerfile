@@ -8,10 +8,7 @@ RUN apk update; \
 
 COPY requirements/mariadb/conf/create_db.sh /tmp/create_db.sh
 
-RUN mkdir /docker-entrypoint-initdb.d && \
-    mkdir /scripts/pre-exec.d && \
-    mkdir /scripts/pre-init.d && \
-    chmod -R 755 /scripts
+RUN chmod -R 755 /tmp
 
 EXPOSE 3306
 #COPY requirements/mariadb/conf/db.sh db.sh
