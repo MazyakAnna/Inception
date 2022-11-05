@@ -89,16 +89,16 @@ services:
     restart: always
 
   website:
-  container_name: website
+    container_name: website
     build:
       context: .
       dockerfile: requirements/bonus/website/Dockerfile
-  ports:
+    ports:
       - "80:80"
-  restart: always
+    restart: always
 
   ftpserver:
-  container_name: ftpserver
+    container_name: ftpserver
     build:
       context: .
       dockerfile: requirements/bonus/ftpserver/Dockerfile
