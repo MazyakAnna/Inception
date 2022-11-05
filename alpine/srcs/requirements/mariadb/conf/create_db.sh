@@ -15,11 +15,12 @@ else
 	chown -R mysql:mysql /var/lib/mysql
 	mysql_install_db --user=mysql --ldata=/var/lib/mysql > /dev/null
 
-	sql_script=`script.sql`
+	sql_script='script.sql'
 	if [ ! -f "$sql_script" ]; then
 	    return 1
 	fi
-echo "start writing"
+
+	echo "start writing"
 	cat << EOF > $sql_script
 USE mysql ;
 FLUSH PRIVILEGES ;
