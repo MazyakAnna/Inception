@@ -35,7 +35,7 @@ RUN apk update && apk upgrade && apk add --no-cache \
 
 WORKDIR /var/www/html
 
-RUN wget https://wordpress.org/latest.zip && \
+RUN mkdir tmp && wget https://wordpress.org/latest.zip && \
     unzip latest.zip -d ./tmp && \
     cp -rf tmp/wordpress/* wordpress/* . && \
     chmod 777 wordpress/ && \
