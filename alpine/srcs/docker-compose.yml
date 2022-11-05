@@ -56,7 +56,7 @@ services:
       - inception
     volumes:
 #      - wp_volume:/var/www/
-      - wp_volume:/var/www/html/wordpress/
+      - wp_volume:/var/www/html/
     restart: always
 
 #  redis:
