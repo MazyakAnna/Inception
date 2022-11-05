@@ -19,6 +19,7 @@ services:
     restart: always
 
   mariadb:
+#    image: mariadb:10.5.9
     container_name: mariadb
     build:
       context: .
@@ -36,8 +37,8 @@ services:
     networks:
       - inception
     volumes:
- #     - mysql_volume:/var/lib/mysql
-      - mysql_volume:/etc/mysql
+      - mysql_volume:/var/lib/mysql/
+ #     - mysql_volume:/etc/mysql
     restart: always
 
   wordpress:
@@ -54,13 +55,13 @@ services:
         WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
         WORDPRESS_TABLE_PREFIX: ${WORDPRESS_TABLE_PREFIX}
         DOMAIN_NAME: ${DOMAIN_NAME}
-#    ports:
-#     - "9000:9000"
+    ports:
+     - "9000:9000"
     networks:
       - inception
     volumes:
-      - wp_volume:/var/www/
-#      - wp_volume:/var/www/html
+#      - wp_volume:/var/www/
+      - wp_volume:/var/www/html
     restart: always
 
 #  redis:
