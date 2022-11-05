@@ -22,10 +22,10 @@ services:
       context: .
       dockerfile: ./requirements/mariadb/Dockerfile
     environment:
-        MYSQL_DATABASE: ${MYSQL_DATABASE}
-        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-        MYSQL_USER: ${MYSQL_USER}
-        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     # ports:
     #   - "3306:3306"
     networks:
@@ -39,17 +39,17 @@ services:
     container_name: wordpress
     depends_on:
       - mariadb
-    build: requirements/wordpress/Dockerfile
-      environment:
-        DOMAIN_NAME: ${DOMAIN_NAME}
-        WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
-        WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
-        WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
-        WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
-        WORDPRESS_TABLE_PREFIX: ${WORDPRESS_TABLE_PREFIX}
-        WORDPRESS_TITLE: ${WORDPRESS_TITLE}
-        WORDPRESS_ADMIN_USER: ${WORDPRESS_ADMIN_USER}
-        WORDPRESS_ADMIN_PASSWORD: ${WORDPRESS_ADMIN_PASSWORD}
+    build: requirements/wordpress
+    environment:
+      DOMAIN_NAME: ${DOMAIN_NAME}
+      WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+      WORDPRESS_TABLE_PREFIX: ${WORDPRESS_TABLE_PREFIX}
+      WORDPRESS_TITLE: ${WORDPRESS_TITLE}
+      WORDPRESS_ADMIN_USER: ${WORDPRESS_ADMIN_USER}
+      WORDPRESS_ADMIN_PASSWORD: ${WORDPRESS_ADMIN_PASSWORD}
     # ports:
     #  - "9000:9000"
     networks:

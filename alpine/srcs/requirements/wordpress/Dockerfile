@@ -43,7 +43,7 @@ EXPOSE 9000
 
 # https://wordpress.org/support/article/creating-database-for-wordpress/#using-the-mysql-client
 
-COPY ./requirements/wordpress/conf/add_wp-config.sh .
+COPY ./conf/add_wp-config.sh .
 
 RUN sh add_wp-config.sh && rm add_wp-config.sh && \
     chmod -R 0777 wp-content/
