@@ -33,13 +33,13 @@ RUN apk update && apk upgrade && apk add --no-cache \
     mkdir -p /var/www/html/wordpress && \
     rm -f /var/cache/apk/*
 
-WORKDIR /var/www/html
+WORKDIR /var/www/html/wordpress
 
-RUN mkdir tmp && wget https://wordpress.org/latest.zip && \
-    unzip latest.zip -d ./tmp && \
-    cp -rf tmp/wordpress/* wordpress/* . && \
-    chmod 777 wordpress/ && \
-    rm -rf tmp
+RUN wget https://wordpress.org/latest.zip && \
+    unzip latest.zip && \
+    cp -rf wordpress/* . && \
+    # chmod 777 wordpress/ && \
+    rm -rf latest.zip
 
 EXPOSE 9000
 
