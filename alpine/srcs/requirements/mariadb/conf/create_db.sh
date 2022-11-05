@@ -19,7 +19,7 @@ else
 	if [ ! -f "$sql_script" ]; then
 	    return 1
 	fi
-
+echo "start writing"
 	cat << EOF > $sql_script
 USE mysql ;
 FLUSH PRIVILEGES ;
@@ -33,10 +33,11 @@ FLUSH PRIVILEGES ;
 
 CREATE USER '$MYSQL_USER'@'localhost' IDENTIFIED BY '$MYSQL_PASSWORD';
 CREATE USER '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';
-GRANT ALL PRIVILEGES ON *.* TO '$MYSQL_USER'@'localhost';
-GRANT ALL PRIVILEGES ON *.* TO '$MYSQL_USER'@'%';
+GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'localhost';
+GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%';
 FLUSH PRIVILEGES ;
 EOF
+	cat $sql_script -e
 	/usr/bin/mysqld --user=mysql --bootstrap --verbose=0 --skip-name-resolve --skip-networking=0 < $sql_script
 	rm -f $sql_script
 fi
