@@ -1,6 +1,12 @@
 # reference: https://wiki.alpinelinux.org/wiki/MariaDB
 FROM alpine:3.16
 
+ARG MYSQL_DATABASE \
+    MYSQL_ROOT_PASSWORD \
+    MYSQL_USER \
+    MYSQL_PASSWORD \
+    HOSTNAME
+
 COPY requirements/mariadb/conf/create_db.sh /tmp/create_db.sh
 
 RUN apk update; \
