@@ -43,7 +43,6 @@ stop:
 clean: down
 	@printf "${name}: Cleaning (docker system prune -a)...\n"
 	@docker system prune -a
-	@sudo rm -rf /home/${user}/wordpress/*
 
 fclean:
 	@printf "${name}: Cleaning everything\n"
@@ -54,8 +53,6 @@ fclean:
 	@docker system prune --all --force --volumes
 	@docker network prune --force
 	@docker volume prune --force
-	@sudo rm -rf /home/bmaegan/wordpress/*
-	@sudo rm -rf /home/bmaegan/mariadb/*
-	@sudo rm -rf /home/bmaegan/mariadb/.*
+	@sudo rm -rf /home/${user}/wordpress/* /home/${user}/mariadb/* /home/${user}/mariadb/.*
 
 .PHONY	: all build down re clean fclean start stop

@@ -57,66 +57,66 @@ services:
       - wp_volume:/var/www/html
     restart: always
 
-#  redis:
-#    container_name: redis
-#    build:
-#      context: .
-#      dockerfile: requirements/bonus/redis/Dockerfile
-#    ports:
-#      - "6379:6379"
-#    networks:
-#      - inception
-#    restart: always
+ redis:
+   container_name: redis
+   build:
+     context: .
+     dockerfile: requirements/bonus/redis/Dockerfile
+   ports:
+     - "6379:6379"
+   networks:
+     - inception
+   restart: always
 
-#  adminer:
-#    container_name: adminer
-#    depends_on:
-#      - mariadb
-#    build:
-#      context: .
-#      dockerfile: requirements/bonus/adminer/Dockerfile
-#    ports:
-#      - "8080:8080"
-#    networks:
-#     - inception
-#    restart: always
+ adminer:
+   container_name: adminer
+   depends_on:
+     - mariadb
+   build:
+     context: .
+     dockerfile: requirements/bonus/adminer/Dockerfile
+   ports:
+     - "8080:8080"
+   networks:
+    - inception
+   restart: always
 
-#  phpmyadmin:
-#    container_name: phpmyadmin
-#    depends_on:
-#      - mariadb
-#    build:
-#      context: .
-#      dockerfile: requirements/bonus/phpmyadmin/Dockerfile
-#    ports:
-#      - "3307:3307"
-#    networks:
-#     - inception
-#    restart: always
+ phpmyadmin:
+   container_name: phpmyadmin
+   depends_on:
+     - mariadb
+   build:
+     context: .
+     dockerfile: requirements/bonus/phpmyadmin/Dockerfile
+   ports:
+     - "3307:3307"
+   networks:
+    - inception
+   restart: always
 
-#  website:
-#    container_name: website
-#    build:
-#      context: .
-#      dockerfile: requirements/bonus/website/Dockerfile
-#    ports:
-#      - "80:80"
-#    restart: always
+ website:
+   container_name: website
+   build:
+     context: .
+     dockerfile: requirements/bonus/website/Dockerfile
+   ports:
+     - "80:80"
+   restart: always
 
-#  ftpserver:
-#    container_name: ftpserver
-#    build:
-#      context: .
-#      dockerfile: requirements/bonus/ftpserver/Dockerfile
-#      args:
-#        FTP_PWD: ${FTP_PWD}
-#    ports:
-#      - "23:23"
-#    volumes:
-#      - wp_volume:/var/www/
-#    networks:
-#     - inception
-#    restart: always
+ ftpserver:
+   container_name: ftpserver
+   build:
+     context: .
+     dockerfile: requirements/bonus/ftpserver/Dockerfile
+     args:
+       FTP_PWD: ${FTP_PWD}
+   ports:
+     - "23:23"
+   volumes:
+     - wp_volume:/var/www/
+   networks:
+    - inception
+   restart: always
 
 
 volumes:
