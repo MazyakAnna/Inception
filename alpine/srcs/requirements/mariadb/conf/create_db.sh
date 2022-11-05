@@ -24,38 +24,10 @@ else
 	fi
 
 	cat << EOF > $tfile
-# SELECT 'some text1';
-# USE mysql;
-# SELECT 'some text2';
-# DROP DATABASE IF EXISTS test ;
-# SELECT 'some text3';
-# #FLUSH PRIVILEGES;
-# SELECT 'some text4';
-# GRANT ALL ON *.* TO 'root'@'%' identified by '$MYSQL_ROOT_PASSWORD' WITH GRANT OPTION ;
-# SELECT 'some text5';
-# #GRANT ALL ON *.* TO 'root'@'localhost' identified by '$MYSQL_ROOT_PASSWORD' WITH GRANT OPTION ;
-# SELECT 'some text6';
-# #ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';
-# SELECT 'some text7';
-# ALTER USER 'root'@'%' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';
-# SELECT 'some text8';
-# FLUSH PRIVILEGES ;
-# SELECT 'some text9';
-# CREATE DATABASE IF NOT EXISTS '$MYSQL_DATABASE' CHARACTER SET utf8 COLLATE utf8_general_ci;
-# SELECT 'some text10';
-# #CREATE USER '$MYSQL_USER'@'localhost' IDENTIFIED BY '$MYSQL_PASSWORD';
-# SELECT 'some text11';
-# CREATE USER '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';
-# SELECT 'some text12';
-# #GRANT ALL ON $MYSQL_DATABASE.* to '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';
-# SELECT 'some text13';
-# FLUSH PRIVILEGES ;
-# SELECT 'some text14';
-
 USE mysql ;
 FLUSH PRIVILEGES ;
 
-DROP DATABASE IF EXISTS test ;
+#DROP DATABASE IF EXISTS test ;
 
 GRANT ALL ON *.* TO 'root'@'%' identified by '$MYSQL_ROOT_PASSWORD' WITH GRANT OPTION ;
 GRANT ALL ON *.* TO 'root'@'localhost' identified by '$MYSQL_ROOT_PASSWORD' WITH GRANT OPTION ;
