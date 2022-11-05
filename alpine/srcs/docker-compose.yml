@@ -26,12 +26,13 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_HOST: ${MYSQL_HOST}
     # ports:
     #   - "3306:3306"
     networks:
       - inception
     volumes:
-      - mysql_volume:/var/lib/mysql/
+      - mysql_volume:/var/lib/mysql
  #     - mysql_volume:/etc/mysql
     restart: always
 
@@ -51,8 +52,8 @@ services:
         WORDPRESS_TITLE: ${WORDPRESS_TITLE}
         WORDPRESS_ADMIN_USER: ${WORDPRESS_ADMIN_USER}
         WORDPRESS_ADMIN_PASSWORD: ${WORDPRESS_ADMIN_PASSWORD}
-    ports:
-     - "9000:9000"
+    # ports:
+    #  - "9000:9000"
     networks:
       - inception
     volumes:
