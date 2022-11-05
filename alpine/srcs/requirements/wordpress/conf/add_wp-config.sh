@@ -1,9 +1,9 @@
 #!bin/sh
 # https://wordpress.org/support/article/how-to-install-wordpress/#step-3-set-up-wp-config-php
 # https://developer.wordpress.org/apis/wp-config-php/
-if [ ! -f "/var/www/wp-config.php" ]; then
-    touch /var/www/wp-config.php &&
-    cat << EOF > /var/www/wp-config.php
+if [ ! -f "/var/www/html/wordpress/wp-config.php" ]; then
+    touch /var/www/html/wordpress/wp-config.php &&
+    cat << EOF > /var/www/html/wordpress/wp-config.php
     <?php
     define( 'DB_NAME', '${WORDPRESS_DB_NAME}' );
     define( 'DB_USER', '${WORDPRESS_DB_USER}' );

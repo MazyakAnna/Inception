@@ -30,23 +30,25 @@ RUN apk update && apk upgrade && apk add --no-cache \
     sed -i "s|;listen.owner = nobody|listen.owner = nobody|g" /etc/php8/php-fpm.d/www.conf && \
     sed -i "s|;listen.group = nobody|listen.group = nobody|g" /etc/php8/php-fpm.d/www.conf && \
     # sed -i "s|;daemonize = yes|daemonize = no|g" /etc/php8/php-fpm.conf && \
+    # mkdir /var/www/html/wp && \
     rm -f /var/cache/apk/*
 
-WORKDIR /var/www/html/
+WORKDIR /var/www/html
 
 RUN wget https://wordpress.org/latest.zip && \
     unzip latest.zip && \
-    cp -rf wordpress/* . && \
-    rm -rf wordpress latest.zip
+    # cp -rf wordpress/* . && \
+    rm -rf latest.zip
 
 EXPOSE 9000
 
 # https://wordpress.org/support/article/creating-database-for-wordpress/#using-the-mysql-client
 
-COPY ./conf/add_wp-config.sh .
+COPY ./conf/add_wp-config.sh ./add_wp-config.sh
 
-RUN sh add_wp-config.sh && rm add_wp-config.sh && \
-    chmod -R 0777 /var/www/wp-content/ && chmod +x /usr/local/bin/wp
+RUN sh add_wp-config.sh && rm add_wp-config.sh
+RUN chmod -R 0777 /var/www/html/wordpress/wp-content/
+RUN chmod +x /usr/local/bin/wp
 
 #-F flag == no demonize
 CMD ["/usr/sbin/php-fpm8", "-F"]
