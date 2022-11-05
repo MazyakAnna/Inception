@@ -52,5 +52,6 @@ fclean:
 	@docker network prune --force
 	@docker volume prune --force
 	@sudo rm -rf ~/wordpress/*
+	@sudo rm -rf /home/${user}/mariadb/*
 
 .PHONY	: all build down re clean fclean start stop

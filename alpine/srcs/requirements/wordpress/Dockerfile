@@ -38,6 +38,7 @@ RUN wget https://wordpress.org/latest.zip && \
     cp -rf wordpress/* . && \
     rm -rf wordpress latest.zip
 
+EXPOSE 9000
 
 # https://wordpress.org/support/article/creating-database-for-wordpress/#using-the-mysql-client
 
