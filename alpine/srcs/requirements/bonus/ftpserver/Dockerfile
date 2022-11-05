@@ -18,7 +18,7 @@ RUN echo "allow_writeable_chroot=YES" >> /etc/vsftpd/vsftpd.conf &&\
     echo 'seccomp_sandbox=NO' >> /etc/vsftpd/vsftpd.conf && \
     echo 'pasv_enable=YES' >> /etc/vsftpd/vsftpd.conf
 
-WORKDIR /var/www
+WORKDIR /var/www/html
 
 EXPOSE 23
 

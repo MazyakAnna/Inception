@@ -1,6 +1,8 @@
 # man: https://wiki.alpinelinux.org/wiki/PhpMyAdmin
 FROM alpine:3.16
 
+ARG MYSQL_HOST
+
 RUN apk update && apk upgrade && apk add --no-cache \
     php8 \
     php8-common \
@@ -23,11 +25,14 @@ RUN apk update && apk upgrade && apk add --no-cache \
     php8-simplexml \
     wget
 
-WORKDIR /var/www/
+WORKDIR /var/www/html
 
 RUN wget https://files.phpmyadmin.net/phpMyAdmin/5.0.4/phpMyAdmin-5.0.4-all-languages.tar.gz && \
     tar -xvf phpMyAdmin-5.0.4-all-languages.tar.gz && \
-    mv phpMyAdmin-5.0.4-all-languages phpmyadmin && chown -R 777 /var/www
+    mv phpMyAdmin-5.0.4-all-languages phpmyadmin && chown -R 777 /var/www && \
+    rm "phpMyAdmin-5.0.4-all-languages.tar.gz" && \
+    cp "/var/www/html/phpmyadmin/config.sample.inc.php" "/var/www/html/phpmyadmin/config.inc.php" && \
+    sed -i "s|localhost|$MYSQL_HOST|g" /var/www/html/phpmyadmin/config.inc.php
 #    ln -s /usr/share/webapps/phpmyadmin/ /var/www/localhost/htdocs/phpmyadmin
 
 EXPOSE 3307
