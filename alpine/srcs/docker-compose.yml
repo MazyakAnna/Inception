@@ -21,12 +21,12 @@ services:
     build:
       context: .
       dockerfile: ./requirements/mariadb/Dockerfile
-    environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-      HOSTNAME: ${MYSQL_HOSTNAME}
+      args:
+        MYSQL_DATABASE: ${MYSQL_DATABASE}
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        HOSTNAME: ${MYSQL_HOSTNAME}
     # ports:
     #   - "3306:3306"
     networks:
