@@ -38,13 +38,14 @@ WORKDIR /var/www/html
 RUN wget https://wordpress.org/latest.zip && \
     unzip latest.zip && \
     # cp -rf wordpress/* . && \
+    chmod 777 wordpress/ && \
     rm -rf latest.zip
 
 EXPOSE 9000
 
 # https://wordpress.org/support/article/creating-database-for-wordpress/#using-the-mysql-client
 
-COPY ./conf/add_wp-config.sh ./add_wp-config.sh
+COPY ./conf/add_wp-config.sh add_wp-config.sh
 
 RUN sh add_wp-config.sh && rm add_wp-config.sh
 RUN chmod -R 0777 /var/www/html/wordpress/wp-content/
