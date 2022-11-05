@@ -15,7 +15,7 @@ define('FS_METHOD','direct');
 \$table_prefix = '${WORDPRESS_TABLE_PREFIX}';
 define( 'WP_SITEURL', 'https://${DOMAIN_NAME}' );
 define( 'WP_DEBUG', false );
-if (3 ! defined( 'ABSPATH' ) ) {
+if ( ! defined( 'ABSPATH' ) ) {
 define( 'ABSPATH', __DIR__ . '/' );}
 define( 'WP_REDIS_HOST', '${REDIS_HOST}' );
 define( 'WP_REDIS_PASSWORD', '${REDIS_PWD}' );
