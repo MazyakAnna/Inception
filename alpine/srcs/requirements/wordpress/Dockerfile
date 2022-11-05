@@ -3,12 +3,12 @@
 
 FROM alpine:3.16
 
-ARG WORDPRESS_DB_HOST \
-    WORDPRESS_DB_NAME \
-    WORDPRESS_DB_USER \
-    WORDPRESS_DB_PASSWORD \
-    WORDPRESS_TABLE_PREFIX \
-    DOMAIN_NAME
+# ARG WORDPRESS_DB_HOST \
+#     WORDPRESS_DB_NAME \
+#     WORDPRESS_DB_USER \
+#     WORDPRESS_DB_PASSWORD \
+#     WORDPRESS_TABLE_PREFIX \
+#     DOMAIN_NAME
 
 RUN apk update && apk upgrade && apk add --no-cache \
     php8 \
@@ -29,9 +29,10 @@ RUN apk update && apk upgrade && apk add --no-cache \
     sed -i "s|listen = 127.0.0.1:9000|listen = 9000|g" /etc/php8/php-fpm.d/www.conf && \
     sed -i "s|;listen.owner = nobody|listen.owner = nobody|g" /etc/php8/php-fpm.d/www.conf && \
     sed -i "s|;listen.group = nobody|listen.group = nobody|g" /etc/php8/php-fpm.d/www.conf && \
+    # sed -i "s|;daemonize = yes|daemonize = no|g" /etc/php8/php-fpm.conf && \
     rm -f /var/cache/apk/*
 
-WORKDIR /var/www
+WORKDIR /var/www/html/
 
 RUN wget https://wordpress.org/latest.zip && \
     unzip latest.zip && \
@@ -47,4 +48,5 @@ COPY ./requirements/wordpress/conf/add_wp-config.sh .
 RUN sh add_wp-config.sh && rm add_wp-config.sh && \
     chmod -R 0777 wp-content/
 
+#-F flag == no demonize
 CMD ["/usr/sbin/php-fpm8", "-F"]

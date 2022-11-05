@@ -17,21 +17,17 @@ services:
     restart: always
 
   mariadb:
-#    image: mariadb:10.5.9
     container_name: mariadb
     build:
       context: .
       dockerfile: ./requirements/mariadb/Dockerfile
-#      args:
     environment:
         MYSQL_DATABASE: ${MYSQL_DATABASE}
         MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
         MYSQL_USER: ${MYSQL_USER}
         MYSQL_PASSWORD: ${MYSQL_PASSWORD}
-#    expose:
-#      - 3306
-    ports:
-      - "3306:3306"
+    # ports:
+    #   - "3306:3306"
     networks:
       - inception
     volumes:
@@ -43,23 +39,24 @@ services:
     container_name: wordpress
     depends_on:
       - mariadb
-    build:
-      context: .
-      dockerfile: requirements/wordpress/Dockerfile
-      args:
+    build: requirements/wordpress/Dockerfile
+      environment:
+        DOMAIN_NAME: ${DOMAIN_NAME}
         WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
         WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
         WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
         WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
         WORDPRESS_TABLE_PREFIX: ${WORDPRESS_TABLE_PREFIX}
-        DOMAIN_NAME: ${DOMAIN_NAME}
-    ports:
-     - "9000:9000"
+        WORDPRESS_TITLE: ${WORDPRESS_TITLE}
+        WORDPRESS_ADMIN_USER: ${WORDPRESS_ADMIN_USER}
+        WORDPRESS_ADMIN_PASSWORD: ${WORDPRESS_ADMIN_PASSWORD}
+    # ports:
+    #  - "9000:9000"
     networks:
       - inception
     volumes:
 #      - wp_volume:/var/www/
-      - wp_volume:/var/www/html
+      - wp_volume:/var/www/html/
     restart: always
 
 #  redis:
