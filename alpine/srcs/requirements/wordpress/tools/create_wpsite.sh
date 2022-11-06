@@ -33,8 +33,6 @@ PHP
     wp user create "$WORDPRESS_USER" "$WORDPRESS_USER_EMAIL" --role=author --user_pass="$WORDPRESS_USER_PASSWORD"  --path="/var/www/html/wordpress" --allow-root;
     wp user create "$WORDPRESS_ADMIN_USER" "$WORDPRESS_ADMIN_EMAIL" --role=administrator --user_pass="$WORDPRESS_ADMIN_PASSWORD" --path="/var/www/html/wordpress" --allow-root;
 
-# Тема для WordPress
-
 # enable redis cache
     # wp plugin install redis-cache --activate --allow-root
     # wp plugin update --all --allow-root
