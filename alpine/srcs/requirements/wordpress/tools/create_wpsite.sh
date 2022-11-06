@@ -6,6 +6,6 @@ wp plugin install hello-dolly --activate
 wp theme install twentytwenty --activate
 wp plugin update --all
 wp user create $WORDPRESS_USER $WORDPRESS_USER_EMAIL --role=author --user_pass=$WORDPRESS_USER_PASSWORD
-wp post create --post_title="PIKA PIKA" --post_content="CHUUUUUU" --post_status=publish --post_author="pikachu"
+wp post create --post_title="RANDOM TITLE" --post_content="RANDOM CONTENT" --post_status=publish --post_author="$WORDPRESS_USER"
 
-php-fpm7 -F -R
+
