@@ -3,7 +3,6 @@
 # https://wordpress.org/support/article/creating-database-for-wordpress/#using-the-mysql-client
 # https://wp-cli.org/
 # https://developer.wordpress.org/cli/commands/
-# https://developer.wordpress.org/cli/commands/config/create/
 
 FROM alpine:3.16
 
