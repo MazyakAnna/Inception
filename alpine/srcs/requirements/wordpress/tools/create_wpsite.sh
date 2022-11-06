@@ -1,6 +1,6 @@
 #!/bin/sh
 
-while ! mariadb -h $WORDPRESS_DB_HOST -P 3306 -u $WORDPRESS_DB_USER -p $WORDPRESS_DB_PASSWORD; do echo "waiting for db ..."; done
+while ! mariadb -h$WORDPRESS_DB_HOST -P3306 -u$WORDPRESS_DB_USER -p$WORDPRESS_DB_PASSWORD; do echo "waiting for db ..."; done
 # [--config-file=<path>] 
 wp config create --dbname=$WORDPRESS_DB_NAME --dbuser=$WORDPRESS_DB_USER --dbpass=$WORDPRESS_DB_PASSWORD --dbhost=$WORDPRESS_DB_HOST --dbprefix=$WORDPRESS_TABLE_PREFIX --extra-php <<PHP
 define( 'WP_DEBUG', true );
