@@ -54,10 +54,8 @@ services:
         WORDPRESS_ADMIN_PASSWORD: ${WORDPRESS_ADMIN_PASSWORD}
         REDIS_PASSWORD: ${REDIS_PASSWORD}
         REDIS_HOST: ${REDIS_HOST}
-        MYSQL_PORT: ${MYSQL_PORT}
+        MYSQL_PORT: 3306
         FPM_PORT: ${FPM_PORT}
-
-
     networks:
       - inception
     volumes:
