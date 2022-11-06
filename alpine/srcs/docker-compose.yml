@@ -72,64 +72,64 @@ services:
       - inception
     restart: always
 
-  # adminer:
-  #   container_name: adminer
-  #   depends_on:
-  #     - mariadb
-  #   build:
-  #     context: .
-  #     dockerfile: requirements/bonus/adminer/Dockerfile
-  #   ports:
-  #     - "8080:8080"
-  #   networks:
-  #     - inception
-  #   restart: always
+  adminer:
+    container_name: adminer
+    depends_on:
+      - mariadb
+    build:
+      context: .
+      dockerfile: requirements/bonus/adminer/Dockerfile
+    ports:
+      - "8080:8080"
+    networks:
+      - inception
+    restart: always
 
-  # phpmyadmin:
-  #   container_name: phpmyadmin
-  #   depends_on:
-  #     - mariadb
-  #   build:
-  #     context: requirements/bonus/phpmyadmin/
-  #     args:
-  #       PMA_HOST: ${MYSQL_HOSTNAME}
-  #       MYSQL_USER: ${MYSQL_USER}
-  #       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-  #   ports:
-  #     - "3307:3306"
-  #   networks:
-  #     - inception
-  #   volumes:
-  #     - wp_volume:/var/www/html
-  #   restart: always
+  phpmyadmin:
+    container_name: phpmyadmin
+    depends_on:
+      - mariadb
+    build:
+      context: requirements/bonus/phpmyadmin/
+      args:
+        PMA_HOST: ${MYSQL_HOSTNAME}
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "8081:8080"
+    networks:
+      - inception
+    volumes:
+      - mysql_volume:/var/www/html
+    restart: always
 
-  # website:
-  #   container_name: website
-  #   build:
-  #     context: .
-  #     dockerfile: requirements/bonus/website/Dockerfile
-  #   ports:
-  #     - "80:80"
-  #   restart: always
+  website:
+    container_name: website
+    build:
+      context: .
+      dockerfile: requirements/bonus/website/Dockerfile
+    ports:
+      - "80:80"
+    restart: always
 
-  # ftpserver:
-  #   container_name: ftpserver
-  #   build:
-  #     context: .
-  #     dockerfile: requirements/bonus/ftpserver/Dockerfile
-  #     args:
-  #       FTP_PWD: ${FTP_PWD}
-  #   ports:
-  #     - "23:23"
-  #   volumes:
-  #     - wp_volume:/var/www/
-  #   networks:
-  #     - inception
-  #   restart: always
+  ftpserver:
+    container_name: ftpserver
+    build:
+      context: .
+      dockerfile: requirements/bonus/ftpserver/Dockerfile
+      args:
+        FTP_PASSWORD: ${FTP_PASSWORD}
+        FTP_USER: ${FTP_USER}
+    ports:
+      - "23:23"
+    volumes:
+      - wp_volume:/var/www/html
+    networks:
+      - inception
+    restart: always
 
 volumes:
   wp_volume:
-#    external: true
     driver: local
     driver_opts:
       o: bind

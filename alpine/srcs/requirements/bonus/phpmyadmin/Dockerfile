@@ -35,6 +35,7 @@ RUN wget https://files.phpmyadmin.net/phpMyAdmin/5.0.4/phpMyAdmin-5.0.4-all-lang
     sed -i "s|localhost|$PMA_HOST|g" /var/www/html/phpmyadmin/config.inc.php
 #    ln -s /usr/share/webapps/phpmyadmin/ /var/www/localhost/htdocs/phpmyadmin
 
-EXPOSE 3306
+EXPOSE 8080
 
-CMD	[ "php", "-S", "$PMA_HOST:3306", "-t", "/var/www/html" ]
+# starting webserver from all to 3306 port with a specific root directory
+ENTRYPOINT [ "php", "-S", "[::]:3306", "-t", "/var/www/html" ]
