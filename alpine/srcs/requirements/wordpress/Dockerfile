@@ -43,7 +43,7 @@ EXPOSE 9000
 
 RUN			apk update && apk upgrade && apk add --no-cache		\
     php7 \
-    php7-fpm 
+    php7-fpm \
     php7-phar \
     php7-json \
     php7-mysqli \
