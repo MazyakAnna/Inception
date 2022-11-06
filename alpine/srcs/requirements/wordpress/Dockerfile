@@ -50,7 +50,7 @@ RUN apk update && apk upgrade && apk add --no-cache \
     COPY ./tools/* /tmp/tools/
     COPY ./conf/* /tmp/conf/
     # RUN cp /tmp/conf/php-fpm.conf /etc/php8/php-fpm.conf && \
-    RUN cp /tmp/conf/www.conf /etc/php8/php-fpm.d/www.conf
+    # RUN cp /tmp/conf/www.conf /etc/php8/php-fpm.d/www.conf
 
 WORKDIR /var/www/html/
 
