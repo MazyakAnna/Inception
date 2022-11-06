@@ -45,7 +45,8 @@ RUN apk update && apk upgrade && apk add --no-cache \
     RUN    curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 	RUN chmod +x wp-cli.phar
     RUN cp wp-cli.phar /usr/local/bin/wp
-    RUN wp core download
+    RUN wp core download --path=/var/www/html/
+    RUN ls /var/www/html/
     RUN mkdir -p /var/log/php-fpm
 
     COPY ./tools/* /tmp/tools/
