@@ -13,7 +13,7 @@ services:
     volumes:
       - ./requirements/nginx/tools/cert/:/etc/ssl/
       - ./requirements/nginx/conf/:/etc/nginx/http.d/
-      - wp_volume:/var/www/html
+      - wp_volume:/var/www/html/
     restart: always
 
   mariadb:
@@ -32,7 +32,7 @@ services:
     networks:
       - inception
     volumes:
-      - mysql_volume:/var/lib/mysql
+      - mysql_volume:/var/lib/mysql/
     restart: always
 
   wordpress:
@@ -51,12 +51,12 @@ services:
         WORDPRESS_TITLE: ${WORDPRESS_TITLE}
         WORDPRESS_ADMIN_USER: ${WORDPRESS_ADMIN_USER}
         WORDPRESS_ADMIN_PASSWORD: ${WORDPRESS_ADMIN_PASSWORD}
-    # ports:
-    #   - "9000:9000"
+    ports:
+      - "9000:9000"
     networks:
       - inception
     volumes:
-      - wp_volume:/var/www/html
+      - wp_volume:/var/www/html/
     restart: always
 
   redis:
@@ -103,14 +103,14 @@ services:
   #     - wp_volume:/var/www/html
   #   restart: always
 
-  website:
-    container_name: website
-    build:
-      context: .
-      dockerfile: requirements/bonus/website/Dockerfile
-    ports:
-      - "80:80"
-    restart: always
+  # website:
+  #   container_name: website
+  #   build:
+  #     context: .
+  #     dockerfile: requirements/bonus/website/Dockerfile
+  #   ports:
+  #     - "80:80"
+  #   restart: always
 
   # ftpserver:
   #   container_name: ftpserver
@@ -134,13 +134,13 @@ volumes:
     driver_opts:
       o: bind
       type: none
-      device: /home/bmaegan/data/wordpress
+      device: /home/bmaegan/data/wordpress/
   mysql_volume:
     driver: local
     driver_opts:
       o: bind
       type: none
-      device: /home/bmaegan/data/mariadb
+      device: /home/bmaegan/data/mariadb/
 
 
 networks:
