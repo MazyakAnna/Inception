@@ -34,12 +34,10 @@ PHP
     wp user create "$WORDPRESS_ADMIN_USER" "$WORDPRESS_ADMIN_EMAIL" --role=administrator --user_pass="$WORDPRESS_ADMIN_PASSWORD" --path="/var/www/html/wordpress" --allow-root;
 
 # Тема для WordPress
-wp theme install inspiro --activate --allow-root
-
 
 # enable redis cache
-    wp plugin install redis-cache --activate --allow-root
-    wp plugin update --all --allow-root
+    # wp plugin install redis-cache --activate --allow-root
+    # wp plugin update --all --allow-root
 
 echo "Wordpress: set up!"
 else
