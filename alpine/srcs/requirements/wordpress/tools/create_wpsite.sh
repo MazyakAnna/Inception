@@ -27,4 +27,4 @@ wp user create $WORDPRESS_USER $WORDPRESS_USER_EMAIL --role=author --user_pass=$
 wp post create --post_title="RANDOM TITLE" --post_content="RANDOM CONTENT" --post_status=publish --post_author="$WORDPRESS_USER"
 wp theme install inspiro --activate --allow-root
 
-/usr/sbin/php-fpm8 -F
+exec /usr/sbin/php-fpm8 -F
