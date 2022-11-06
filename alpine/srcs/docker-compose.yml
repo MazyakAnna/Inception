@@ -42,7 +42,7 @@ services:
       - mariadb
     build: 
       context: requirements/wordpress
-      args:
+    environment:
         DOMAIN_NAME: ${DOMAIN_NAME}
         WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
         WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
