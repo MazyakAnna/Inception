@@ -55,7 +55,7 @@ services:
         REDIS_PASSWORD: ${REDIS_PASSWORD}
         REDIS_HOST: ${REDIS_HOST}
         MYSQL_PORT: 3306
-        FPM_PORT: ${FPM_PORT}
+        FPM_PORT: 21
     networks:
       - inception
     ports:

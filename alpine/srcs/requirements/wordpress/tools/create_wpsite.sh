@@ -1,5 +1,5 @@
 #!/bin/sh
-
+echo "Let's start the script!"
 # while ! mariadb -h$WORDPRESS_DB_HOST -P3306 -u$WORDPRESS_DB_USER -p$WORDPRESS_DB_PASSWORD; do echo "waiting for db ..."; done
 mkdir -p /var/www/html/wordpress
 
