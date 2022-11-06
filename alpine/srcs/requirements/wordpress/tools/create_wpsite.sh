@@ -19,10 +19,10 @@ if [ ! -f /var/www/html/wordpress/wp-config.php ]; then
 ; else echo "EEEEEE";
 fi
 
-wp core install --url="$DOMAIN_NAME" --title="random title" --admin_user="$WORDPRESS_ADMIN_USER" --admin_password="$WORDPRESS_ADMIN_PASSWORD" --admin_email="$WORDPRESS_ADMIN_EMAIL" --path="/var/www/html/wordpress/" --skip-email --allow-root
-wp plugin install hello-dolly --activate
-wp theme install twentytwenty --activate
-wp plugin update --all
+сd /var/www/html/wordpress/. && wp core install --url="$DOMAIN_NAME" --title="random title" --admin_user="$WORDPRESS_ADMIN_USER" --admin_password="$WORDPRESS_ADMIN_PASSWORD" --admin_email="$WORDPRESS_ADMIN_EMAIL" --path="/var/www/html/wordpress/" --skip-email --allow-root
+# wp plugin install hello-dolly --activate
+# wp theme install twentytwenty --activate
+# wp plugin update --all
 wp user create $WORDPRESS_USER $WORDPRESS_USER_EMAIL --role=author --user_pass=$WORDPRESS_USER_PASSWORD  --allow-root;
 wp post create --post_title="RANDOM TITLE" --post_content="RANDOM CONTENT" --post_status=publish --post_author="$WORDPRESS_USER"
 wp theme install inspiro --activate --allow-root
