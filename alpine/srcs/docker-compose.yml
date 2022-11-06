@@ -51,24 +51,26 @@ services:
         WORDPRESS_TITLE: ${WORDPRESS_TITLE}
         WORDPRESS_ADMIN_USER: ${WORDPRESS_ADMIN_USER}
         WORDPRESS_ADMIN_PASSWORD: ${WORDPRESS_ADMIN_PASSWORD}
-    ports:
-      - "9000:9000"
+    # ports:
+    #   - "9000:9000"
     networks:
       - inception
     volumes:
       - wp_volume:/var/www/html
     restart: always
 
-  # redis:
-  #   container_name: redis
-  #   build:
-  #     context: .
-  #     dockerfile: requirements/bonus/redis/Dockerfile
-  #   ports:
-  #     - "6379:6379"
-  #   networks:
-  #     - inception
-  #   restart: always
+  redis:
+    container_name: redis
+    build:
+      context: .
+      dockerfile: requirements/bonus/redis/Dockerfile
+    depends_on:
+      - wordpress
+    ports:
+      - "6379:6379"
+    networks:
+      - inception
+    restart: always
 
   # adminer:
   #   container_name: adminer
