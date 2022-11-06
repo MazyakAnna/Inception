@@ -62,7 +62,8 @@ RUN apk update && apk upgrade && apk add --no-cache \
 
 
     RUN php wp-cli.phar --info
-    RUN chmod +x wp-cli.phar && sudo mv wp-cli.phar /usr/local/bin/wp
+    RUN chmod +x wp-cli.phar
+    RUN mv wp-cli.phar /usr/local/bin/wp
     RUN wp core download
     # RUN ls /var/www/html/
     RUN mkdir -p /var/log/php-fpm
