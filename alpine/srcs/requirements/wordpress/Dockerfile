@@ -61,7 +61,8 @@ WORKDIR /var/www/html/
 RUN ls -la
 RUN pwd
 RUN  wp core download --path='/var/www/html/wordpress' --allow-root
-RUN wp core install --url="$DOMAIN_NAME" --title="$WORDPRESS_DB_NAME" --admin_user="$WORDPRESS_ADMIN_USER" --admin_password="$WORDPRESS_ADMIN_PASSWORD" --admin_email="$WORDPRESS_ADMIN_EMAIL" --path="/var/www/html/wordpress" --skip-email --allow-root
+RUN wp config create --dbname=$WORDPRESS_DB_NAME --dbuser=$WORDPRESS_DB_USER --dbpass=$WORDPRESS_DB_PASSWORD --dbhost=$WORDPRESS_DB_HOST --dbprefix=$WORDPRESS_TABLE_PREFIX --config-file="/var/www/html/wordpress/wp-config.php"
+# RUN wp core install --url="$DOMAIN_NAME" --title="$WORDPRESS_DB_NAME" --admin_user="$WORDPRESS_ADMIN_USER" --admin_password="$WORDPRESS_ADMIN_PASSWORD" --admin_email="$WORDPRESS_ADMIN_EMAIL" --path="/var/www/html/wordpress" --skip-email --allow-root
 # RUN  wp core install --path='wordpress' --url=$DOMAIN_NAME --title=$WORDPRESS_DB_NAME --admin_user=$WORDPRESS_ADMIN_USER --admin_password=$WORDPRESS_ADMIN_PASSWORD --admin_email=$WORDPRESS_ADMIN_EMAIL --skip-email --allow-root
 # CMD    ["sh", "/tmp/tools/create_wpsite.sh"]
 ENTRYPOINT    ["sh", "/tmp/tools/create_wpsite.sh"]
