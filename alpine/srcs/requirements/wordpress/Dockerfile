@@ -22,25 +22,48 @@ ARG WORDPRESS_DB_HOST \
 EXPOSE 9000
 
 
-RUN apk update && apk upgrade && apk add --no-cache \
-    php8 \
-    php8-fpm \
-    php8-mysqli \
-    php8-json \
-    php8-curl \
-    php8-dom \
-    php8-exif \
-    php8-fileinfo \
-    php8-mbstring \
-    php8-openssl \
-    php8-xml \
-    php8-zip \
-    php8-redis \
-    curl && \
-    # sed -i "s|;daemonize = yes|daemonize = no|g" /etc/php8/php-fpm.conf && \
-    rm -f /var/cache/apk/*
-    RUN    curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-    RUN php8 wp-cli.phar --info
+# RUN apk update && apk upgrade && apk add --no-cache \
+#     php8 \
+#     php8-fpm \
+#     php8-mysqli \
+#     php8-json \
+#     php8-curl \
+#     php8-dom \
+#     php8-exif \
+#     php8-fileinfo \
+#     php8-mbstring \
+#     php8-openssl \
+#     php8-xml \
+#     php8-zip \
+#     php8-redis \
+#     curl && \
+#     # sed -i "s|;daemonize = yes|daemonize = no|g" /etc/php8/php-fpm.conf && \
+#     rm -f /var/cache/apk/*
+#     RUN    curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+
+RUN			apk update && apk upgrade && apk add --no-cache		\
+											php7				\
+											php7-fpm			\
+											php7-phar			\
+											php7-json			\
+											php7-mysqli			\
+											php7-curl			\
+											php7-iconv			\
+											php7-pecl-mailparse	\
+											curl				\
+											mariadb-client		\
+											bash				\
+											wget				\
+											curl				\
+											vim					\
+											sudo
+
+RUN			curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
+			chmod +x wp-cli.phar &&	\
+			cp wp-cli.phar /usr/bin/wp 
+
+
+    RUN php wp-cli.phar --info
     RUN chmod +x wp-cli.phar && sudo mv wp-cli.phar /usr/local/bin/wp
     RUN wp core download
     # RUN ls /var/www/html/
