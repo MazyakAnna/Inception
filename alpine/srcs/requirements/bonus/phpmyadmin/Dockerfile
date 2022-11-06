@@ -37,4 +37,4 @@ RUN wget https://files.phpmyadmin.net/phpMyAdmin/5.0.4/phpMyAdmin-5.0.4-all-lang
 
 EXPOSE 3306
 
-CMD	[ "php", "-S", "[::]:3306", "-t", "/var/www/html" ]
+CMD	[ "php", "-S", "$PMA_HOST:3306", "-t", "/var/www/html" ]
