@@ -49,7 +49,7 @@ RUN apk update && apk upgrade && apk add --no-cache \
         sed -i "s|;listen.owner = nobody|listen.owner = nobody|g" /etc/php8/php-fpm.d/www.conf && \
         sed -i "s|;listen.group = nobody|listen.group = nobody|g" /etc/php8/php-fpm.d/www.conf
         # sed -i "s|;daemonize = yes|daemonize = no|g" /etc/php8/php-fpm.conf && \
-    COPY ./tools/* /tmp/tools/
+    COPY ./tools/create_wpsite.sh /var/www/html/create_wpsite.sh
     COPY ./conf/* /tmp/conf/
     # RUN cp /tmp/conf/php-fpm.conf /etc/php8/php-fpm.conf && \
     # RUN cp /tmp/conf/www.conf /etc/php8/php-fpm.d/www.conf
@@ -57,7 +57,7 @@ RUN apk update && apk upgrade && apk add --no-cache \
 WORKDIR /var/www/html/
 
 
-CMD    ["sh", "/tmp/tools/create_wpsite.sh"]
+CMD    ["sh", "create_wpsite.sh"]
 
 #   -F flag = no demonize
 # ENTRYPOINT ["/usr/sbin/php-fpm8", "-F"]
