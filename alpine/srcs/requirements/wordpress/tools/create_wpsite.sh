@@ -4,19 +4,6 @@
 mkdir -p /var/www/html/wordpress
 
 
-
-# wp config create --dbname=$WORDPRESS_DB_NAME --dbuser=$WORDPRESS_DB_USER --dbpass=$WORDPRESS_DB_PASSWORD --dbhost=$WORDPRESS_DB_HOST --dbprefix=$WORDPRESS_TABLE_PREFIX --config-file="/var/www/html/wordpress/wp-config.php" --extra-php <<PHP
-# define( 'WP_DEBUG', true );
-# define( 'WP_DEBUG_LOG', true );
-# define( 'WP_REDIS_HOST', '${REDIS_HOST}' );
-# define( 'WP_REDIS_PASSWORD', '${REDIS_PASSWORD}' );
-# define( 'WP_REDIS_PORT', 6379 );
-# define( 'WP_REDIS_TIMEOUT', 1 );
-# define( 'WP_REDIS_READ_TIMEOUT', 1 );
-# define( 'WP_REDIS_DATABASE', 0 );
-# PHP
-
-
 if [ ! -f /var/www/html/wordpress/wp-config.php ]; then
     echo "No config, let's create one!"
     cd /var/www/html/wordpress;
@@ -34,13 +21,25 @@ if [ ! -f /var/www/html/wordpress/wp-config.php ]; then
 # Тема для WordPress
 wp theme install inspiro --activate --allow-root
 
-# enable redis cache
-    sed -i "40i define( 'WP_REDIS_HOST', '$REDIS_HOST' );"      wp-config.php
-    sed -i "41i define( 'WP_REDIS_PORT', 6379 );"               wp-config.php
-    #sed -i "42i define( 'WP_REDIS_PASSWORD', '$REDIS_PWD' );"   wp-config.php
-    sed -i "42i define( 'WP_REDIS_TIMEOUT', 1 );"               wp-config.php
-    sed -i "43i define( 'WP_REDIS_READ_TIMEOUT', 1 );"          wp-config.php
-    sed -i "44i define( 'WP_REDIS_DATABASE', 0 );\n"            wp-config.php
+
+wp config create --dbname=$WORDPRESS_DB_NAME --dbuser=$WORDPRESS_DB_USER --dbpass=$WORDPRESS_DB_PASSWORD --dbhost=$WORDPRESS_DB_HOST --dbprefix=$WORDPRESS_TABLE_PREFIX --config-file="/var/www/html/wordpress/wp-config.php" --extra-php <<PHP
+define( 'WP_DEBUG', true );
+define( 'WP_DEBUG_LOG', true );
+define( 'WP_REDIS_HOST', '${REDIS_HOST}' );
+define( 'WP_REDIS_PASSWORD', '${REDIS_PASSWORD}' );
+define( 'WP_REDIS_PORT', 6379 );
+define( 'WP_REDIS_TIMEOUT', 1 );
+define( 'WP_REDIS_READ_TIMEOUT', 1 );
+define( 'WP_REDIS_DATABASE', 0 );
+PHP
+
+# # enable redis cache
+#     sed -i "40i define( 'WP_REDIS_HOST', '$REDIS_HOST' );"      wp-config.php
+#     sed -i "41i define( 'WP_REDIS_PORT', 6379 );"               wp-config.php
+#     #sed -i "42i define( 'WP_REDIS_PASSWORD', '$REDIS_PWD' );"   wp-config.php
+#     sed -i "42i define( 'WP_REDIS_TIMEOUT', 1 );"               wp-config.php
+#     sed -i "43i define( 'WP_REDIS_READ_TIMEOUT', 1 );"          wp-config.php
+#     sed -i "44i define( 'WP_REDIS_DATABASE', 0 );\n"            wp-config.php
 
     wp plugin install redis-cache --activate --allow-root
     wp plugin update --all --allow-root
