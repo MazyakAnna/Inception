@@ -6,19 +6,19 @@
 
 FROM alpine:3.16
 
-ARG WORDPRESS_DB_HOST \
-    WORDPRESS_DB_NAME \
-    WORDPRESS_DB_USER \
-    WORDPRESS_DB_PASSWORD \
-    WORDPRESS_TABLE_PREFIX \
-    DOMAIN_NAME \
-    WORDPRESS_TITLE \
-    WORDPRESS_ADMIN_USER \
-    WORDPRESS_ADMIN_PASSWORD \
-    REDIS_PASSWORD \
-    REDIS_HOST \
-    MYSQL_PORT \
-    FPR_PORT
+# ARG WORDPRESS_DB_HOST \
+#     WORDPRESS_DB_NAME \
+#     WORDPRESS_DB_USER \
+#     WORDPRESS_DB_PASSWORD \
+#     WORDPRESS_TABLE_PREFIX \
+#     DOMAIN_NAME \
+#     WORDPRESS_TITLE \
+#     WORDPRESS_ADMIN_USER \
+#     WORDPRESS_ADMIN_PASSWORD \
+#     REDIS_PASSWORD \
+#     REDIS_HOST \
+#     MYSQL_PORT \
+#     FPR_PORT
 
 EXPOSE 9000
 
@@ -54,14 +54,8 @@ RUN apk update && apk upgrade && apk add --no-cache \
         # sed -i "s|;daemonize = yes|daemonize = no|g" /etc/php8/php-fpm.conf && \
     COPY ./tools/create_wpsite.sh /tmp/tools/create_wpsite.sh
     COPY ./conf/* /tmp/conf/
-    # RUN cp /tmp/conf/php-fpm.conf /etc/php8/php-fpm.conf && \
-    # RUN cp /tmp/conf/www.conf /etc/php8/php-fpm.d/www.conf
 
 WORKDIR /var/www/html/
-# RUN wp config create --dbname=$WORDPRESS_DB_NAME --dbuser=$WORDPRESS_DB_USER --dbpass=$WORDPRESS_DB_PASSWORD --dbhost=$WORDPRESS_DB_HOST --dbprefix=$WORDPRESS_TABLE_PREFIX --path="/var/www/html/wordpress"  --config-file="/var/www/html/wordpress/wp-config.php"
-# RUN wp core install --url="$DOMAIN_NAME" --title="$WORDPRESS_DB_NAME" --admin_user="$WORDPRESS_ADMIN_USER" --admin_password="$WORDPRESS_ADMIN_PASSWORD" --admin_email="$WORDPRESS_ADMIN_EMAIL" --path="/var/www/html/wordpress" --skip-email --allow-root
-# RUN  wp core install --path='wordpress' --url=$DOMAIN_NAME --title=$WORDPRESS_DB_NAME --admin_user=$WORDPRESS_ADMIN_USER --admin_password=$WORDPRESS_ADMIN_PASSWORD --admin_email=$WORDPRESS_ADMIN_EMAIL --skip-email --allow-root
-# CMD    ["sh", "/tmp/tools/create_wpsite.sh"]
 ENTRYPOINT    ["sh", "/tmp/tools/create_wpsite.sh"]
 
 #   -F flag = no demonize

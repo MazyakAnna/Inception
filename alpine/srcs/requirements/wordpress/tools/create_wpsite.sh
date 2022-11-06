@@ -1,8 +1,5 @@
 #!/bin/sh
-echo "Let's start the script!"
-# while ! mariadb -h$WORDPRESS_DB_HOST -P3306 -u$WORDPRESS_DB_USER -p$WORDPRESS_DB_PASSWORD; do echo "waiting for db ..."; done
-mkdir -p /var/www/html/wordpress
-
+while ! mariadb -h$WORDPRESS_DB_HOST -P3306 -u$WORDPRESS_DB_USER -p$WORDPRESS_DB_PASSWORD; do echo "waiting for db ..."; done
 
 if [ ! -f /var/www/html/wordpress/wp-config.php ]; then
     echo "No config, let's create one!"
@@ -15,9 +12,8 @@ if [ ! -f /var/www/html/wordpress/wp-config.php ]; then
     echo "Wordpress: creating users..."
 # Создание таблицы WordPress в базе данных, 
 # используя URL-адрес, заголовок и предоставленные данные пользователя-администратора по умолчанию
-    # wp core install --url="$DOMAIN_NAME" --title="$WORDPRESS_DB_NAME" --admin_user="$WORDPRESS_ADMIN_USER" --admin_password="$WORDPRESS_ADMIN_PASSWORD" --admin_email="$WORDPRESS_ADMIN_EMAIL" --path="/var/www/html/wordpress/" --skip-email --allow-root
-# Создание обычного пользователя
-    wp config create --dbname=$WORDPRESS_DB_NAME --dbuser=$WORDPRESS_DB_USER --dbpass=$WORDPRESS_DB_PASSWORD --dbhost=$WORDPRESS_DB_HOST --dbprefix=$WORDPRESS_TABLE_PREFIX --path="/var/www/html/wordpress"  --config-file="/var/www/html/wordpress/wp-config.php"
+    wp core install --url="$DOMAIN_NAME" --title="$WORDPRESS_DB_NAME" --admin_user="$WORDPRESS_ADMIN_USER" --admin_password="$WORDPRESS_ADMIN_PASSWORD" --admin_email="$WORDPRESS_ADMIN_EMAIL" --path="/var/www/html/wordpress/" --skip-email --allow-root
+    # wp config create --dbname=$WORDPRESS_DB_NAME --dbuser=$WORDPRESS_DB_USER --dbpass=$WORDPRESS_DB_PASSWORD --dbhost=$WORDPRESS_DB_HOST --dbprefix=$WORDPRESS_TABLE_PREFIX --path="/var/www/html/wordpress"  --config-file="/var/www/html/wordpress/wp-config.php"
     wp user create $WORDPRESS_USER $WORDPRESS_USER_EMAIL --role=author --user_pass=$WORDPRESS_USER_PASSWORD  --allow-root;
 # Тема для WordPress
 wp theme install inspiro --activate --allow-root
