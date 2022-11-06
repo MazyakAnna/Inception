@@ -39,3 +39,21 @@ touch project/srcs/requirements/wordpress/Dockerfile
 touch project/srcs/requirements/wordpress/.dockerignore
 echo ".git" > project/srcs/requirements/wordpress/.dockerignore
 echo ".env" >> project/srcs/requirements/wordpress/.dockerignore
+
+
+
+
+#  ID | user_login | user_pass                          | user_nicename | user_email  | user_url              | user_registered     | user_activation_key | user_status | display_name |
+# +----+------------+------------------------------------+---------------+-------------+-----------------------+---------------------+---------------------+-------------+--------------+
+# |  1 | LOLOL      | $P$BhxaSH2g4VyqIU6rZlXVpDO0TXBhM4. | lolol         | LOL@lol.lol | https://bmaegan.42.fr | 2022-11-06 18:46:18 |                     |           0 | LOLOL        |
+
+
+# INSERT INTO 'wp_users'(ID, user_login, user_pass, user_nicename, user_email, user_url, user_registered, user_status, display_name) VALUES (1, $WORDPRESS_ADMIN_USER, $WORDPRESS_ADMIN_PASSWORD, IamGRoot, $WORDPRESS_ADMIN_EMAIL, https://bmaegan.42.fr, 2022-11-06 18:46:18 , 0,  Bellia Maegan)
+# INSERT INTO 'wp_users'(ID, user_login, user_pass, user_nicename, user_email, user_url, user_registered, user_status, display_name) VALUES (2, $WORDPRESS_USER, $WORDPRESS_PASSWORD, reader, $WORDPRESS_USER_EMAIL, https://bmaegan.42.fr, 2022-11-06 18:46:18 , 0, Just_a_reader)
+
+# INSERT INTO 'wp_usermeta' (user_id, meta_key, meta_value) VALUES (1, wp_capabilities, a:1:{s:13:"administrator";s:1:"1";})
+# INSERT INTO 'wp_usermeta' (user_id, meta_key, meta_value) VALUES (2, wp_capabilities, a:1:{s:13:"administrator";s:1:"1";})
+
+
+# INSERT INTO wp_users (ID, user_login, user_pass, user_nicename, user_email, user_url, user_registered, user_status, display_name) VALUES (4, 'keker', '12345', 'kecker', 'kek@kek.kek', 'https://bmaegan.42.fr', '2022-11-06 18:46:18' , 0, 'kek kek kek');
+# INSERT INTO wp_usermeta (user_id, meta_key, meta_value) VALUES (4, 'wp_capabilities', 'a:1:{s:13:"administrator";s:1:"1";}');

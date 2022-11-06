@@ -29,6 +29,8 @@ PHP
 
 # --admin_email="$WORDPRESS_ADMIN_EMAIL"
     wp user create $WORDPRESS_USER $WORDPRESS_USER_EMAIL --role=author --user_pass=$WORDPRESS_USER_PASSWORD  --allow-root;
+    wp user create $WORDPRESS_ADMIN_USER $WORDPRESS_ADMIN_EMAIL --role=administrator --user_pass=$WORDPRESS_ADMIN_PASSWORD  --allow-root;
+
 # Тема для WordPress
 wp theme install inspiro --activate --allow-root
 
