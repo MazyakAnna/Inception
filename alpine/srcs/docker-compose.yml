@@ -86,12 +86,17 @@ services:
     depends_on:
       - mariadb
     build:
-      context: .
-      dockerfile: requirements/bonus/phpmyadmin/Dockerfile
+      context: requirements/bonus/phpmyadmin/
+      args:
+        PMA_HOST: ${MYSQL_HOSTNAME}
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     ports:
-      - "3307:3307"
+      - "3307:3306"
     networks:
       - inception
+    volumes:
+      - wp_volume:/var/www/html
     restart: always
 
   website:
