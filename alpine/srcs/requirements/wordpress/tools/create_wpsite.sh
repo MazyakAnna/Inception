@@ -12,16 +12,17 @@ if [ ! -f /var/www/html/wordpress/wp-config.php ]; then
     echo "Wordpress: creating users..."
 # Создание таблицы WordPress в базе данных, 
 # используя URL-адрес, заголовок и предоставленные данные пользователя-администратора по умолчанию
-    wp core install --url="$DOMAIN_NAME" --title="$WORDPRESS_DB_NAME" --admin_user="$WORDPRESS_ADMIN_USER" --admin_password="$WORDPRESS_ADMIN_PASSWORD" --admin_email="$WORDPRESS_ADMIN_EMAIL" --path="/var/www/html/wordpress/" --skip-email --allow-root --extra-php <<PHP
-define( 'WP_DEBUG', true );
-define( 'WP_DEBUG_LOG', true );
-define( 'WP_REDIS_HOST', '${REDIS_HOST}' );
-define( 'WP_REDIS_PASSWORD', '${REDIS_PASSWORD}' );
-define( 'WP_REDIS_PORT', 6379 );
-define( 'WP_REDIS_TIMEOUT', 1 );
-define( 'WP_REDIS_READ_TIMEOUT', 1 );
-define( 'WP_REDIS_DATABASE', 0 );
-PHP
+    wp core install --url="$DOMAIN_NAME" --title="$WORDPRESS_DB_NAME" --admin_user="$WORDPRESS_ADMIN_USER" --admin_password="$WORDPRESS_ADMIN_PASSWORD" --admin_email="$WORDPRESS_ADMIN_EMAIL" --path="/var/www/html/wordpress/" --skip-email --allow-root
+#      --extra-php <<PHP
+# define( 'WP_DEBUG', true );
+# define( 'WP_DEBUG_LOG', true );
+# define( 'WP_REDIS_HOST', '${REDIS_HOST}' );
+# define( 'WP_REDIS_PASSWORD', '${REDIS_PASSWORD}' );
+# define( 'WP_REDIS_PORT', 6379 );
+# define( 'WP_REDIS_TIMEOUT', 1 );
+# define( 'WP_REDIS_READ_TIMEOUT', 1 );
+# define( 'WP_REDIS_DATABASE', 0 );
+# PHP
     # wp config create --dbname=$WORDPRESS_DB_NAME --dbuser=$WORDPRESS_DB_USER --dbpass=$WORDPRESS_DB_PASSWORD --dbhost=$WORDPRESS_DB_HOST --dbprefix=$WORDPRESS_TABLE_PREFIX --path="/var/www/html/wordpress"  --config-file="/var/www/html/wordpress/wp-config.php"
     wp user create $WORDPRESS_USER $WORDPRESS_USER_EMAIL --role=author --user_pass=$WORDPRESS_USER_PASSWORD  --allow-root;
 # Тема для WordPress
