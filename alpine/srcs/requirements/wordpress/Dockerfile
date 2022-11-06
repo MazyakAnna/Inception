@@ -43,10 +43,10 @@ RUN apk update && apk upgrade && apk add --no-cache \
     # sed -i "s|;daemonize = yes|daemonize = no|g" /etc/php8/php-fpm.conf && \
     rm -f /var/cache/apk/*
     RUN    curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-	RUN chmod +x wp-cli.phar
-    RUN cp wp-cli.phar /usr/local/bin/wp
-    RUN wp core download --path=/var/www/html/
-    RUN ls /var/www/html/
+    RUN php wp-cli.phar --info
+    RUN chmod +x wp-cli.phar && sudo mv wp-cli.phar /usr/local/bin/wp
+    RUN wp core download
+    # RUN ls /var/www/html/
     RUN mkdir -p /var/log/php-fpm
 
     COPY ./tools/* /tmp/tools/
