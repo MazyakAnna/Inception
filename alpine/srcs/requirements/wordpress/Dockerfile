@@ -43,15 +43,14 @@ RUN apk update && apk upgrade && apk add --no-cache \
     # php wp-cli.phar --info
     chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp && \
     wp core download && mkdir -p /var/log/php-fpm
-    RUN sed -i "s|listen = 127.0.0.1:9000|listen = 9000|g" /etc/php8/php-fpm.d/www.conf
-    RUN sed -i "s|;listen.owner = nobody|listen.owner = nobody|g" /etc/php8/php-fpm.d/www.conf && \
-    sed -i "s|;listen.group = nobody|listen.group = nobody|g" /etc/php8/php-fpm.d/www.conf
-    # sed -i "s|;daemonize = yes|daemonize = no|g" /etc/php8/php-fpm.conf && \
+    RUN sed -i "s|listen = 127.0.0.1:9000|listen = 9000|g" /etc/php8/php-fpm.d/www.conf && \
+        sed -i "s|;listen.owner = nobody|listen.owner = nobody|g" /etc/php8/php-fpm.d/www.conf && \
+        sed -i "s|;listen.group = nobody|listen.group = nobody|g" /etc/php8/php-fpm.d/www.conf
+        # sed -i "s|;daemonize = yes|daemonize = no|g" /etc/php8/php-fpm.conf && \
     COPY ./tools/* /tmp/tools/
     COPY ./conf/* /tmp/conf/
-    RUN cp /tmp/conf/php-fpm.conf /etc/php7/php-fpm.conf && \
-    cp /tmp/conf/www.conf /etc/php7/php-fpm.d/www.conf && \
-    cp 
+    # RUN cp /tmp/conf/php-fpm.conf /etc/php8/php-fpm.conf && \
+    # cp /tmp/conf/www.conf /etc/php8/php-fpm.d/www.conf
 
 WORKDIR /var/www/html/
 
