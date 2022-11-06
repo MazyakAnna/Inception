@@ -27,9 +27,9 @@ define( 'WP_REDIS_READ_TIMEOUT', 1 );
 define( 'WP_REDIS_DATABASE', 0 );
 PHP
 
-    wp db import /tmp/conf/exported_database.sql --path='./wordpress'
-    wp user create $WORDPRESS_USER $WORDPRESS_USER_EMAIL --role=author --user_pass=$WORDPRESS_USER_PASSWORD  --allow-root;
-    wp user create $WORDPRESS_ADMIN_USER $WORDPRESS_ADMIN_EMAIL --role=administrator --user_pass=$WORDPRESS_ADMIN_PASSWORD  --allow-root;
+    wp db import /tmp/conf/exported_database.sql --path='/var/www/html//wordpress'
+    wp user create $WORDPRESS_USER $WORDPRESS_USER_EMAIL --role=author --user_pass=$WORDPRESS_USER_PASSWORD  --path="/var/www/html/wordpress" --allow-root;
+    wp user create $WORDPRESS_ADMIN_USER $WORDPRESS_ADMIN_EMAIL --role=administrator --user_pass=$WORDPRESS_ADMIN_PASSWORD --path="/var/www/html/wordpress" --allow-root;
 
 # Тема для WordPress
 wp theme install inspiro --activate --allow-root
