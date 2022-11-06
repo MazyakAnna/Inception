@@ -54,8 +54,6 @@ services:
         WORDPRESS_ADMIN_PASSWORD: ${WORDPRESS_ADMIN_PASSWORD}
         REDIS_PASSWORD: ${REDIS_PASSWORD}
         REDIS_HOST: ${REDIS_HOST}
-    ports:
-      - "9000:9000"
     networks:
       - inception
     volumes:
