@@ -8,21 +8,22 @@ if [ ! -f /var/www/html/wordpress/wp-config.php ]; then
     echo "No config, let's create one!"
     cd /var/www/html/wordpress;
 # static website
-	mkdir -p /var/www/html/wordpress/staticwebsite;
-    mv /var/www/index.html /var/www/html/wordpress/staticwebsite/index.html;
-    wp core download --allow-root;
-    mv /var/www/wp-config.php /var/www/html/wordpress;
+	# mkdir -p /var/www/html/wordpress/staticwebsite;
+    # mv /var/www/index.html /var/www/html/wordpress/staticwebsite/index.html;
+    # wp core download --allow-root;
+    # mv /var/www/wp-config.php /var/www/html/wordpress;
     echo "Wordpress: creating users..."
 # Создание таблицы WordPress в базе данных, 
 # используя URL-адрес, заголовок и предоставленные данные пользователя-администратора по умолчанию
-    wp core install --url="$DOMAIN_NAME" --title="$WORDPRESS_DB_NAME" --admin_user="$WORDPRESS_ADMIN_USER" --admin_password="$WORDPRESS_ADMIN_PASSWORD" --admin_email="$WORDPRESS_ADMIN_EMAIL" --path="/var/www/html/wordpress/" --skip-email --allow-root
+    # wp core install --url="$DOMAIN_NAME" --title="$WORDPRESS_DB_NAME" --admin_user="$WORDPRESS_ADMIN_USER" --admin_password="$WORDPRESS_ADMIN_PASSWORD" --admin_email="$WORDPRESS_ADMIN_EMAIL" --path="/var/www/html/wordpress/" --skip-email --allow-root
 # Создание обычного пользователя
+    wp config create --dbname=$WORDPRESS_DB_NAME --dbuser=$WORDPRESS_DB_USER --dbpass=$WORDPRESS_DB_PASSWORD --dbhost=$WORDPRESS_DB_HOST --dbprefix=$WORDPRESS_TABLE_PREFIX --path="/var/www/html/wordpress"  --config-file="/var/www/html/wordpress/wp-config.php"
     wp user create $WORDPRESS_USER $WORDPRESS_USER_EMAIL --role=author --user_pass=$WORDPRESS_USER_PASSWORD  --allow-root;
 # Тема для WordPress
 wp theme install inspiro --activate --allow-root
 
 
-wp config create --dbname=$WORDPRESS_DB_NAME --dbuser=$WORDPRESS_DB_USER --dbpass=$WORDPRESS_DB_PASSWORD --dbhost=$WORDPRESS_DB_HOST --dbprefix=$WORDPRESS_TABLE_PREFIX --config-file="/var/www/html/wordpress/wp-config.php"
+# wp config create --dbname=$WORDPRESS_DB_NAME --dbuser=$WORDPRESS_DB_USER --dbpass=$WORDPRESS_DB_PASSWORD --dbhost=$WORDPRESS_DB_HOST --dbprefix=$WORDPRESS_TABLE_PREFIX --config-file="/var/www/html/wordpress/wp-config.php"
 #  --extra-php <<PHP
 # define( 'WP_DEBUG', true );
 # define( 'WP_DEBUG_LOG', true );
