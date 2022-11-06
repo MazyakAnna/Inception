@@ -13,6 +13,12 @@ define( 'WP_REDIS_READ_TIMEOUT', 1 );
 define( 'WP_REDIS_DATABASE', 0 );
 PHP
 
+if [ ! -f /var/www/html/wordpress/wp-config.php ]; then
+    echo "AAAAAAAAAAAAAAA"
+    mv /wp-config.php /var/www/html/wordpress/wp-config.php
+; else echo "EEEEEE";
+fi
+
 wp core install --url="$DOMAIN_NAME" --title="random title" --admin_user="$WORDPRESS_ADMIN_USER" --admin_password="$WORDPRESS_ADMIN_PASSWORD" --admin_email="$WORDPRESS_ADMIN_EMAIL" --path="/var/www/html/wordpress/" --skip-email --allow-root
 wp plugin install hello-dolly --activate
 wp theme install twentytwenty --activate
