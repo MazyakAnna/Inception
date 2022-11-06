@@ -45,7 +45,7 @@ RUN apk update && apk upgrade && apk add --no-cache \
     # php wp-cli.phar --info
     chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp && \
     # wp core download  --allow-root && \
-    mkdir -p /var/log/php-fpm && mkdir -p /var/www/html/wordpress
+    mkdir -p /var/log/php-fpm && mkdir -m 777 -p /var/www/html/wordpress
     RUN sed -i "s|listen = 127.0.0.1:9000|listen = 9000|g" /etc/php8/php-fpm.d/www.conf && \
         sed -i "s|;listen.owner = nobody|listen.owner = nobody|g" /etc/php8/php-fpm.d/www.conf && \
         sed -i "s|;listen.group = nobody|listen.group = nobody|g" /etc/php8/php-fpm.d/www.conf
