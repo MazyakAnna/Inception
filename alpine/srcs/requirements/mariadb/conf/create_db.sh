@@ -38,7 +38,16 @@ GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'localhost';
 GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%';
 FLUSH PRIVILEGES ;
 EOF
+
 	cat $sql_script -e
+	cat << EOF > /etc/my.cnf.d/mariadb-server.cnf
+[mysqld]
+skip-host-cache
+skip-name-resolve
+bind-address=0.0.0.0
+port = 3306
+EOF
+
 	/usr/bin/mysqld --user=mysql --bootstrap --verbose=0 --skip-name-resolve --skip-networking=0 < $sql_script
 	rm -f $sql_script
 fi

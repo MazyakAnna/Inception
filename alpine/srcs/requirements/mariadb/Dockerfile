@@ -11,7 +11,7 @@ EXPOSE 3306
 
 RUN apk update; \
     apk upgrade; \
-    apk add --no-cache mariadb mariadb-client mariadb-server-utils && \
+    apk add --no-cache mariadb mariadb-client mariadb-server mariadb-server-utils && \
     rm -rf /var/cache/apk/*
 
 COPY requirements/mariadb/conf/create_db.sh /tmp/create_db.sh
