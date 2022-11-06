@@ -22,16 +22,17 @@ if [ ! -f /var/www/html/wordpress/wp-config.php ]; then
 wp theme install inspiro --activate --allow-root
 
 
-wp config create --dbname=$WORDPRESS_DB_NAME --dbuser=$WORDPRESS_DB_USER --dbpass=$WORDPRESS_DB_PASSWORD --dbhost=$WORDPRESS_DB_HOST --dbprefix=$WORDPRESS_TABLE_PREFIX --config-file="/var/www/html/wordpress/wp-config.php" --extra-php <<PHP
-define( 'WP_DEBUG', true );
-define( 'WP_DEBUG_LOG', true );
-define( 'WP_REDIS_HOST', '${REDIS_HOST}' );
-define( 'WP_REDIS_PASSWORD', '${REDIS_PASSWORD}' );
-define( 'WP_REDIS_PORT', 6379 );
-define( 'WP_REDIS_TIMEOUT', 1 );
-define( 'WP_REDIS_READ_TIMEOUT', 1 );
-define( 'WP_REDIS_DATABASE', 0 );
-PHP
+wp config create --dbname=$WORDPRESS_DB_NAME --dbuser=$WORDPRESS_DB_USER --dbpass=$WORDPRESS_DB_PASSWORD --dbhost=$WORDPRESS_DB_HOST --dbprefix=$WORDPRESS_TABLE_PREFIX --config-file="/var/www/html/wordpress/wp-config.php"
+#  --extra-php <<PHP
+# define( 'WP_DEBUG', true );
+# define( 'WP_DEBUG_LOG', true );
+# define( 'WP_REDIS_HOST', '${REDIS_HOST}' );
+# define( 'WP_REDIS_PASSWORD', '${REDIS_PASSWORD}' );
+# define( 'WP_REDIS_PORT', 6379 );
+# define( 'WP_REDIS_TIMEOUT', 1 );
+# define( 'WP_REDIS_READ_TIMEOUT', 1 );
+# define( 'WP_REDIS_DATABASE', 0 );
+# PHP
 
 # # enable redis cache
 #     sed -i "40i define( 'WP_REDIS_HOST', '$REDIS_HOST' );"      wp-config.php
