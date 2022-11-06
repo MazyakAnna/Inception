@@ -37,9 +37,6 @@ RUN apk update && apk upgrade && apk add --no-cache \
     php8-zip \
     php8-redis \
     curl && \
-    sed -i "s|listen = 127.0.0.1:9000|listen = 9000|g" /etc/php8/php-fpm.d/www.conf && \
-    sed -i "s|;listen.owner = nobody|listen.owner = nobody|g" /etc/php8/php-fpm.d/www.conf && \
-    sed -i "s|;listen.group = nobody|listen.group = nobody|g" /etc/php8/php-fpm.d/www.conf && \
     # sed -i "s|;daemonize = yes|daemonize = no|g" /etc/php8/php-fpm.conf && \
     rm -f /var/cache/apk/*
     RUN    curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
@@ -48,7 +45,9 @@ RUN apk update && apk upgrade && apk add --no-cache \
     RUN wp core download
     # RUN ls /var/www/html/
     RUN mkdir -p /var/log/php-fpm
-
+    RUN     sed -i "s|listen = 127.0.0.1:9000|listen = 9000|g" /etc/php8/php-fpm.d/www.conf && \
+    sed -i "s|;listen.owner = nobody|listen.owner = nobody|g" /etc/php8/php-fpm.d/www.conf && \
+    sed -i "s|;listen.group = nobody|listen.group = nobody|g" /etc/php8/php-fpm.d/www.conf && \
     COPY ./tools/* /tmp/tools/
     COPY ./conf/* /tmp/conf/
     RUN cp /tmp/conf/php-fpm.conf /etc/php7/php-fpm.conf && \
