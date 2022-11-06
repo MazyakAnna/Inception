@@ -1,6 +1,9 @@
 # https://wordpress.org/support/article/how-to-install-wordpress/
 # https://wiki.alpinelinux.org/wiki/WordPress
 # https://wordpress.org/support/article/creating-database-for-wordpress/#using-the-mysql-client
+# https://wp-cli.org/
+# https://developer.wordpress.org/cli/commands/
+# https://developer.wordpress.org/cli/commands/config/create/
 
 FROM alpine:3.16
 
@@ -17,6 +20,7 @@ ARG WORDPRESS_DB_HOST \
     REDIS_HOST
 
 EXPOSE 9000
+
 
 RUN apk update && apk upgrade && apk add --no-cache \
     php8 \
@@ -38,20 +42,25 @@ RUN apk update && apk upgrade && apk add --no-cache \
     sed -i "s|;listen.owner = nobody|listen.owner = nobody|g" /etc/php8/php-fpm.d/www.conf && \
     sed -i "s|;listen.group = nobody|listen.group = nobody|g" /etc/php8/php-fpm.d/www.conf && \
     # sed -i "s|;daemonize = yes|daemonize = no|g" /etc/php8/php-fpm.conf && \
-    rm -f /var/cache/apk/*
+    rm -f /var/cache/apk/* && \
+    curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
+	hmod +x wp-cli.phar &&	\
+	cp wp-cli.phar /usr/bin/wp && wp core download && \
+    mkdir /var/log/php-fpm
+
+    COPY ./tools/* /tmp/tools/
+    COPY ./conf/* /tmp/conf/
+    RUN cp /tmp/conf/php-fpm.conf /etc/php7/php-fpm.conf && \
+    cp /tmp/conf/www.conf /etc/php7/php-fpm.d/www.conf && \
+    cp 
 
 WORKDIR /var/www/html/
 
-RUN wget https://wordpress.org/latest.zip && \
-    unzip latest.zip && \
-    chmod 777 wordpress/ && \
-    rm -rf latest.zip
 
-COPY ./conf/add_wp-config.sh add_wp-config.sh
-
-RUN sh add_wp-config.sh && \
-    rm add_wp-config.sh && \
-    chmod -R 777 wordpress/wp-content/
+# RUN sh /tmp/conf/add_wp-config.sh && \
+#     rm /tmp/conf/add_wp-config.sh && \
+#     chmod -R 777 wordpress/wp-content/ && \
+RUN    sh /tmp/tools/create_wpsite.sh
 
 #   -F flag = no demonize
-CMD ["/usr/sbin/php-fpm8", "-F"]
+ENTRYPOINT ["/usr/sbin/php-fpm8", "-F"]
