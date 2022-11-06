@@ -56,11 +56,8 @@ RUN apk update && apk upgrade && apk add --no-cache \
 
 WORKDIR /var/www/html/
 
-# RUN mkdir /var/www/html/wordpress && sh /tmp/conf/add_wp-config.sh
-# RUN sh /tmp/conf/add_wp-config.sh && \
-#     rm /tmp/conf/add_wp-config.sh && \
-#     chmod -R 777 wordpress/wp-content/ && \
-RUN    sh /tmp/tools/create_wpsite.sh
+
+CMD    ["sh", "/tmp/tools/create_wpsite.sh"]
 
 #   -F flag = no demonize
-ENTRYPOINT ["/usr/sbin/php-fpm8", "-F"]
+# ENTRYPOINT ["/usr/sbin/php-fpm8", "-F"]
