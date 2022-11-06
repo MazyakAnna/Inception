@@ -55,7 +55,7 @@ RUN apk update && apk upgrade && apk add --no-cache \
 
 WORKDIR /var/www/html/
 
-RUN sh tmp/conf/add_wp-config.sh
+RUN sh /tmp/conf/add_wp-config.sh
 # RUN sh /tmp/conf/add_wp-config.sh && \
 #     rm /tmp/conf/add_wp-config.sh && \
 #     chmod -R 777 wordpress/wp-content/ && \
