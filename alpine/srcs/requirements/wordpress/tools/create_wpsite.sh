@@ -27,8 +27,7 @@ define( 'WP_REDIS_READ_TIMEOUT', 1 );
 define( 'WP_REDIS_DATABASE', 0 );
 PHP
 
-    wp db create
-# --admin_email="$WORDPRESS_ADMIN_EMAIL"
+    cat /tmp/conf/exported_database.sql | wp db import
     wp user create $WORDPRESS_USER $WORDPRESS_USER_EMAIL --role=author --user_pass=$WORDPRESS_USER_PASSWORD  --allow-root;
     wp user create $WORDPRESS_ADMIN_USER $WORDPRESS_ADMIN_EMAIL --role=administrator --user_pass=$WORDPRESS_ADMIN_PASSWORD  --allow-root;
 
@@ -37,7 +36,6 @@ wp theme install inspiro --activate --allow-root
 
 
 # enable redis cache
-
     wp plugin install redis-cache --activate --allow-root
     wp plugin update --all --allow-root
 

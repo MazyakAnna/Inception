@@ -48,12 +48,14 @@ RUN apk update && apk upgrade && apk add --no-cache \
     mkdir -p /var/log/php-fpm && mkdir -m 777 -p /var/www/html/wordpress && \
     wp core download --path='/var/www/html/wordpress' --allow-root
 
+    COPY ./tools/create_wpsite.sh /tmp/tools/create_wpsite.sh
+    COPY ./conf/* /tmp/conf/
+
     RUN sed -i "s|listen = 127.0.0.1:9000|listen = 9000|g" /etc/php8/php-fpm.d/www.conf && \
         sed -i "s|;listen.owner = nobody|listen.owner = nobody|g" /etc/php8/php-fpm.d/www.conf && \
         sed -i "s|;listen.group = nobody|listen.group = nobody|g" /etc/php8/php-fpm.d/www.conf
         # sed -i "s|;daemonize = yes|daemonize = no|g" /etc/php8/php-fpm.conf && \
-    COPY ./tools/create_wpsite.sh /tmp/tools/create_wpsite.sh
-    COPY ./conf/* /tmp/conf/
+
 
 WORKDIR /var/www/html/
 ENTRYPOINT    ["sh", "/tmp/tools/create_wpsite.sh"]
