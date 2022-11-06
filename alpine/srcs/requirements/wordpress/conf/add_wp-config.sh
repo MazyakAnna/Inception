@@ -14,11 +14,12 @@ define( 'DB_COLLATE', '' );
 define('FS_METHOD','direct');
 \$table_prefix = '${WORDPRESS_TABLE_PREFIX}';
 define( 'WP_SITEURL', 'https://${DOMAIN_NAME}' );
-define( 'WP_DEBUG', false );
+define( 'WP_DEBUG', true );
+define( 'WP_DEBUG_LOG', true );
 if ( ! defined( 'ABSPATH' ) ) {
 define( 'ABSPATH', __DIR__ . '/' );}
 define( 'WP_REDIS_HOST', '${REDIS_HOST}' );
-define( 'WP_REDIS_PASSWORD', '${REDIS_PWD}' );
+define( 'WP_REDIS_PASSWORD', '${REDIS_PASSWORD}' );
 define( 'WP_REDIS_PORT', 6379 );
 define( 'WP_REDIS_TIMEOUT', 1 );
 define( 'WP_REDIS_READ_TIMEOUT', 1 );

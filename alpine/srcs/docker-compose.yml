@@ -33,6 +33,7 @@ services:
       - inception
     volumes:
       - mysql_volume:/var/lib/mysql/
+
     restart: always
 
   wordpress:
@@ -51,6 +52,8 @@ services:
         WORDPRESS_TITLE: ${WORDPRESS_TITLE}
         WORDPRESS_ADMIN_USER: ${WORDPRESS_ADMIN_USER}
         WORDPRESS_ADMIN_PASSWORD: ${WORDPRESS_ADMIN_PASSWORD}
+        REDIS_PASSWORD: ${REDIS_PASSWORD}
+        REDIS_HOST: ${REDIS_HOST}
     ports:
       - "9000:9000"
     networks:
