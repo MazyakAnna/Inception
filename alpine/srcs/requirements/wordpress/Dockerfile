@@ -42,7 +42,8 @@ RUN apk update && apk upgrade && apk add --no-cache \
     curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
     # php wp-cli.phar --info
     chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp && \
-    wp core download && mkdir -p /var/log/php-fpm
+    wp core download  --allow-root && \
+    mkdir -p /var/log/php-fpm
     RUN sed -i "s|listen = 127.0.0.1:9000|listen = 9000|g" /etc/php8/php-fpm.d/www.conf && \
         sed -i "s|;listen.owner = nobody|listen.owner = nobody|g" /etc/php8/php-fpm.d/www.conf && \
         sed -i "s|;listen.group = nobody|listen.group = nobody|g" /etc/php8/php-fpm.d/www.conf
@@ -54,7 +55,7 @@ RUN apk update && apk upgrade && apk add --no-cache \
 
 WORKDIR /var/www/html/
 
-
+RUN sh tmp/conf/add_wp-config.sh
 # RUN sh /tmp/conf/add_wp-config.sh && \
 #     rm /tmp/conf/add_wp-config.sh && \
 #     chmod -R 777 wordpress/wp-content/ && \
