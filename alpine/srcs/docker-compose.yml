@@ -100,7 +100,7 @@ services:
         MYSQL_USER: ${MYSQL_USER}
         MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     ports:
-      - "8081:8080"
+      - "8090:8080"
     networks:
       - inception
     volumes:
@@ -113,7 +113,9 @@ services:
       context: .
       dockerfile: requirements/bonus/website/Dockerfile
     ports:
-      - "80:80"
+        80:80
+    volumes:
+      - wp_volume:/var/www/html
     restart: always
 
   ftpserver:
