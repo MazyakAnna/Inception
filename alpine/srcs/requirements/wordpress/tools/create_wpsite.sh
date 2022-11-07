@@ -20,7 +20,7 @@ define( 'WP_DEBUG', true );
 define( 'WP_DEBUG_LOG', true );
 define( 'WP_SITEURL', 'https://$DOMAIN_NAME' );
 define('WP_HOME', 'https://$DOMAIN_NAME'); 
-define( 'WP_REDIS_HOST', '$REDIS_HOST' );
+define( 'WP_REDIS_HOST', 'redis' );
 define( 'WP_REDIS_PORT', 6379 );
 define( 'WP_REDIS_TIMEOUT', 1 );
 define( 'WP_REDIS_READ_TIMEOUT', 1 );
