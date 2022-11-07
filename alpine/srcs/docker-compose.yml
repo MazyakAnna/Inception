@@ -94,7 +94,8 @@ services:
     container_name: phpmyadmin
     depends_on:
       - mariadb
-    build: requirements/bonus/phpmyadmin/
+    build:
+      context: requirements/bonus/phpmyadmin/
       args:
         PMA_HOST: ${MYSQL_HOSTNAME}
         MYSQL_USER: ${MYSQL_USER}
