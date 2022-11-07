@@ -16,8 +16,6 @@ if [ ! -f /var/www/html/wordpress/wp-config.php ]; then
 # используя URL-адрес, заголовок и предоставленные данные пользователя-администратора по умолчанию
     # wp core install --url="$DOMAIN_NAME" --title="$WORDPRESS_DB_NAME" --admin_user="$WORDPRESS_ADMIN_USER" --admin_password="$WORDPRESS_ADMIN_PASSWORD" --admin_email="$WORDPRESS_ADMIN_EMAIL" --path="wordpress/" --skip-email --allow-root
     wp config create --dbname=$WORDPRESS_DB_NAME --dbuser=$WORDPRESS_ADMIN_USER --dbpass=$WORDPRESS_ADMIN_PASSWORD --dbhost=$WORDPRESS_DB_HOST --dbprefix=$WORDPRESS_TABLE_PREFIX --path="/var/www/html/wordpress"  --config-file="wp-config.php" --allow-root --extra-php << PHP
-define( 'WP_DEBUG', true );
-define( 'WP_DEBUG_LOG', true );
 define( 'WP_SITEURL', 'https://$DOMAIN_NAME' );
 define('WP_HOME', 'https://$DOMAIN_NAME'); 
 define( 'WP_REDIS_HOST', 'redis' );
@@ -31,16 +29,13 @@ PHP
     wp user create "$WORDPRESS_USER" "$WORDPRESS_USER_EMAIL" --role=author --user_pass="$WORDPRESS_USER_PASSWORD"  --path="/var/www/html/wordpress" --allow-root;
     wp user create "$WORDPRESS_ADMIN_USER" "$WORDPRESS_ADMIN_EMAIL" --role=administrator --user_pass="$WORDPRESS_ADMIN_PASSWORD" --path="/var/www/html/wordpress" --allow-root;
 
-enable redis cache
+# install redis plagin
     wp plugin install redis-cache --activate --allow-root
     wp plugin update --all --allow-root
 
-echo "Wordpress: set up!"
-else
-echo "Wordpress: is already set up!"
 fi
 
 wp redis enable --allow-root
 
-echo "Wordpress started on :9000"
+echo "Wordpress config: OK"
 /usr/sbin/php-fpm8 -F
