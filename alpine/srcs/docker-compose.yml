@@ -104,8 +104,6 @@ services:
       - "8090:8080"
     networks:
       - inception
-    volumes:
-      - mysql_volume:/var/www/html
     restart: always
 
   website:
