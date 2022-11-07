@@ -33,7 +33,6 @@ RUN wget https://files.phpmyadmin.net/phpMyAdmin/5.0.4/phpMyAdmin-5.0.4-all-lang
     rm "phpMyAdmin-5.0.4-all-languages.tar.gz" && \
     cp "/var/www/html/phpmyadmin/config.sample.inc.php" "/var/www/html/phpmyadmin/config.inc.php" && \
     sed -i "s|localhost|$PMA_HOST|g" /var/www/html/phpmyadmin/config.inc.php
-#    ln -s /usr/share/webapps/phpmyadmin/ /var/www/localhost/htdocs/phpmyadmin
 
 EXPOSE 8080
 
