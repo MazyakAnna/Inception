@@ -114,7 +114,7 @@ services:
       context: .
       dockerfile: requirements/bonus/website/Dockerfile
     ports:
-        80:80
+      - 80:80
     volumes:
       - wp_volume:/var/www/html
     restart: always
