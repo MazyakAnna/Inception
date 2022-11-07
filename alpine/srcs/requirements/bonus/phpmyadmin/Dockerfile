@@ -38,4 +38,4 @@ RUN wget https://files.phpmyadmin.net/phpMyAdmin/5.0.4/phpMyAdmin-5.0.4-all-lang
 EXPOSE 8080
 
 # starting webserver from all to 8090 port with a specific root directory
-ENTRYPOINT [ "php", "-S", "[::]:8090", "-t", "/var/www/html" ]
+ENTRYPOINT [ "php", "-S", "[::]:8090", "-t", "/var/www/html/phpmyadmin" ]
