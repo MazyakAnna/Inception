@@ -30,7 +30,7 @@ re:
 
 start:
 	@printf "${name}: Docker compose start...\n"
-	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env start ${basic_services}
+	@docker-compose -f ./srcs/docker-compose.yml --env-file srcs/.env start 
 
 startbonus:
 	@printf "${name}: Docker compose start...\n"

@@ -35,7 +35,7 @@ PHP
 
 fi
 
-wp redis enable --allow-root
+wp plugin activate redis
 
 echo "Wordpress config: OK"
 /usr/sbin/php-fpm8 -F
