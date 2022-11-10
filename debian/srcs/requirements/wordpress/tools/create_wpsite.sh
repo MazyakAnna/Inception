@@ -36,4 +36,4 @@ PHP
 fi
 
 echo "Wordpress config: OK"
-/usr/sbin/php-fpm8 -F
+/usr/sbin/php-fpm -F

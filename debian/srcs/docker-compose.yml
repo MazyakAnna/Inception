@@ -19,8 +19,7 @@ services:
   mariadb:
     container_name: mariadb
     build:
-      context: .
-      dockerfile: ./requirements/mariadb/Dockerfile
+      context: ./requirements/mariadb/
       args:
         MYSQL_DATABASE: ${MYSQL_DATABASE}
         MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}

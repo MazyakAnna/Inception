@@ -37,14 +37,14 @@ RUN apt install -y \
     COPY ./tools/create_wpsite.sh /tmp/tools/create_wpsite.sh
     COPY ./conf/* /tmp/conf/
 
-#   RUN sed -i "s|listen = 127.0.0.1:9000|listen = 9000|g" /etc/php/7.3/fpm/pool.d/www.conf && \
-#       sed -i "s|;listen.owner = nobody|listen.owner = nobody|g" /etc/php/7.3/fpm/pool.d/www.conf && \
-#        sed -i "s|;listen.group = nobody|listen.group = nobody|g" /etc/php/7.3/fpm/pool.d/www.conf
+   RUN sed -i "s|listen = 127.0.0.1:9000|listen = 9000|g" /etc/php/7.3/fpm/pool.d/www.conf && \
+       sed -i "s|;listen.owner = nobody|listen.owner = nobody|g" /etc/php/7.3/fpm/pool.d/www.conf && \
+        sed -i "s|;listen.group = nobody|listen.group = nobody|g" /etc/php/7.3/fpm/pool.d/www.conf
         # sed -i "s|;daemonize = yes|daemonize = no|g" /etc/php8/php-fpm.conf && \
 
 
-#WORKDIR /var/www/html/
-ENTRYPOINT  "tmp/tools/create_wpsite.sh"
-#ENTRYPOINT tail -f
+WORKDIR /var/www/html/
+ENTRYPOINT  ["sh", "/tmp/tools/create_wpsite.sh"]
+
 #   -F flag = no demonize
 # ENTRYPOINT ["/usr/sbin/php-fpm8", "-F"]
