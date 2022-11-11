@@ -47,4 +47,4 @@ WORKDIR /var/www/html/
 ENTRYPOINT  ["sh", "/tmp/tools/create_wpsite.sh"]
 
 #   -F flag = no demonize
-# ENTRYPOINT ["/usr/sbin/php-fpm8", "-F"]
+# ENTRYPOINT ["/usr/sbin/php-fpm", "-F"]
