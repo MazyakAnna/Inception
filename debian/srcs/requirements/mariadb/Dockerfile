@@ -15,9 +15,10 @@ RUN apt-get install mariadb-server -y
 COPY --chmod=777 ./conf/create_db.sh /tmp/create_db.sh
 
 # setup server and create DB
-RUN  /tmp/create_db.sh && chmod 777 /tmp/create_db.sql && \
-	 service mysql start && \
-	 mysql < /tmp/create_db.sql --verbose && \
+RUN chmod 777 /tmp/create_db.sh && /tmp/create_db.sh && \
+    chmod 777 /tmp/create_db.sql && \
+	service mysql start && \
+	mysql < /tmp/create_db.sql --verbose && \
 	rm -rf /tmp/create_db.sql
 
 
