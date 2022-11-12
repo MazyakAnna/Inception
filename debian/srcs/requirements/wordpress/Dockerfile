@@ -15,10 +15,6 @@ RUN apt install -y \
     php-mysqli \
     php-json \
     php-curl \
-    # php-dom \
-    # php-exif \
-    # php-fileinfo \
-    # php-mbstring \
     php-xml \
     php-zip \
     mariadb-client \

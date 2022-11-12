@@ -16,7 +16,10 @@ RUN adduser --home /var/www/html --shell /bin/false --disabled-password $FTP_USE
     adduser $FTP_USER root && \
     chown -R $FTP_USER:$FTP_USER /var/www/html
 
-RUN sed -i "s|#chroot_local_user=YES|chroot_local_user=YES|g"  /etc/vsftpd.conf && \
+
+RUN sed -i "s|listen=NO|listen=YES|g"  /etc/vsftpd.conf && \
+    sed -i "s|listen_ipv6=YES|#listen_ipv6=YES|g"  /etc/vsftpd.conf && \
+    sed -i "s|#chroot_local_user=YES|chroot_local_user=YES|g"  /etc/vsftpd.conf && \
     sed -i "s|#local_enable=YES|local_enable=YES|g"  /etc/vsftpd.conf && \
     sed -i "s|#write_enable=YES|write_enable=YES|g"  /etc/vsftpd.conf && \
     sed -i "s|#local_umask=022|local_umask=007|g"  /etc/vsftpd.conf 
