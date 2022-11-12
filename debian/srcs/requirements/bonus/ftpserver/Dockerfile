@@ -16,7 +16,8 @@ RUN adduser --home /var/www/html --shell /bin/false --disabled-password $FTP_USE
     chown -R $FTP_USER:$FTP_USER /var/www/html
 
 
-RUN sed -i "s|listen=NO|listen=YES|g"  /etc/vsftpd.conf && \
+RUN mkdir -p /var/run/vsftpd/empty && \
+    sed -i "s|listen=NO|listen=YES|g"  /etc/vsftpd.conf && \
     sed -i "s|listen_ipv6=YES|#listen_ipv6=YES|g"  /etc/vsftpd.conf && \
     sed -i "s|#chroot_local_user=YES|chroot_local_user=YES|g"  /etc/vsftpd.conf && \
     sed -i "s|#local_enable=YES|local_enable=YES|g"  /etc/vsftpd.conf && \
