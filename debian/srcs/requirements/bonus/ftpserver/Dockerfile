@@ -7,7 +7,7 @@ ARG FTP_PASSWORD \
     FTP_USER
 
 RUN apt-get update && apt-get install -y vsftpd  && \
-    mkdir -p /var/www/html/wordpress && \
+    mkdir -p /var/www/html && \
     mkdir -p /var/run/vsftpd/empty
 
 RUN adduser --home /var/www/html --disabled-password $FTP_USER && \
