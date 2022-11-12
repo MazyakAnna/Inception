@@ -1,74 +1,148 @@
-version: "3.9"
+version: '3'
 
 services:
-  db:
-    build:
-      context: ./srcs/requirements/mariadb
-      dockerfile: Dockerfile
-    container_name: MariaDB
-    #command:
-    voulmes:
-      - db_data:/var/lib/mysql
-    #restart: always
-    restart: unless-stopped
-    #env_file: .env
-    environment:
-      MYSQL_ROOT_PASSWORD: qwerty
-      MYSQL_DATABASE: wordpress
-      MYSQL_USER: bmaegan
-      MYSQL_PASSWORD: 12345
-    networks:
-      - app-network
-
-  wp:
-    depends-on:
-      - db
-    container_name: wordpress
-    volumes:
-      - ./mariadb/conf/wp_data:/var/www/html
-    build:
-      context: ./srcs/requirements/wordpress
-      dockerfile: Dockerfile
-    ports:
-      - "8080:80"
-    restart: unless-stopped
-    env_file: .env
-      #links:
-      #  - redis
-    environment:
-      WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_USER: wp
-      WORDPRESS_DB_PASSWORD: qwerty123
-      WORDPRESS_DB_NAME: wordpress
-    networks:
-      - app-network
-
   nginx:
-    depends_on:
-      - wp
     container_name: nginx
-    build: ./srcs/requirements/nginx/
-    ports: 443:443
-    restart: always
-    volumes:
-      - wordpress_data:/var/www/html
-      - ./nginx-conf:/etc/nginx/conf.d
+    depends_on:
+      - wordpress
+    build: requirements/nginx
+    ports:
+      - "443:443"
     networks:
-      - app-network
+      - inception
+    volumes:
+      - wp_volume:/var/www/html/
+    restart: always
 
-        #  phpmyadmin:
-        #    image: phpmyadmin
-        #    restart: always
-        #    ports:
-        #      - 8080:80
-        #    environment:
-        #      - PMA_ARBITRARY=1
+  mariadb:
+    container_name: mariadb
+    build:
+      context: ./requirements/mariadb/
+      args:
+        MYSQL_DATABASE_NAME: ${MYSQL_DATABASE_NAME}
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+        HOSTNAME: ${MYSQL_HOSTNAME}
+    ports:
+      - "3306:3306"
+    networks:
+      - inception
+    volumes:
+      - mysql_volume:/var/lib/mysql/
+
+    restart: always
+
+  wordpress:
+    container_name: wordpress
+    depends_on:
+      - mariadb
+    build: 
+      context: requirements/wordpress
+    environment:
+        DOMAIN_NAME: ${DOMAIN_NAME}
+        WORDPRESS_DB_HOST: ${WORDPRESS_DB_HOST}
+        WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+        WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+        WORDPRESS_TABLE_PREFIX: ${WORDPRESS_TABLE_PREFIX}
+        WORDPRESS_TITLE: ${WORDPRESS_TITLE}
+        WORDPRESS_ADMIN_USER: ${WORDPRESS_ADMIN_USER}
+        WORDPRESS_ADMIN_PASSWORD: ${WORDPRESS_ADMIN_PASSWORD}
+        WORDPRESS_ADMIN_EMAIL: ${WORDPRESS_ADMIN_EMAIL}
+        WORDPRESS_USER: ${WORDPRESS_USER}
+        WORDPRESS_USER_PASSWORD: ${WORDPRESS_USER_PASSWORD}
+        WORDPRESS_USER_EMAIL: ${WORDPRESS_USER_EMAIL}
+        REDIS_PASSWORD: ${REDIS_PASSWORD}
+        REDIS_HOST: ${REDIS_HOST}
+        MYSQL_PORT: 3306
+        FPM_PORT: 21
+    networks:
+      - inception
+    ports:
+        - 9000:9000
+    volumes:
+      - wp_volume:/var/www/html/
+    restart: always
+
+  redis:
+    container_name: redis
+    build: requirements/bonus/redis/
+    depends_on:
+      - wordpress
+    ports:
+      - "6379:6379"
+    networks:
+      - inception
+    restart: always
+
+  adminer:
+    container_name: adminer
+    depends_on:
+      - mariadb
+    build: requirements/bonus/adminer/
+    ports:
+      - "8000:8080"
+    networks:
+      - inception
+    restart: always
+
+  phpmyadmin:
+    container_name: phpmyadmin
+    depends_on:
+      - mariadb
+    build:
+      context: requirements/bonus/phpmyadmin/
+      args:
+        PMA_HOST: ${MYSQL_HOSTNAME}
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "8090:8080"
+    networks:
+      - inception
+    restart: always
+
+  website:
+    container_name: website
+    build:
+      context: ./requirements/bonus/website
+    ports:
+      - 80:80
+    restart: always
+
+  ftpserver:
+    container_name: ftpserver
+    build:
+      context: .
+      dockerfile: requirements/bonus/ftpserver/Dockerfile
+      args:
+        FTP_PASSWORD: ${FTP_PASSWORD}
+        FTP_USER: ${FTP_USER}
+    ports:
+      - "21:21" 
+    volumes:
+      - wp_volume:/var/www/html
+    networks:
+      - inception
+    restart: always
 
 volumes:
-  db_data: {}
-  wordpress_data: {}
+  wp_volume:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/bmaegan/data/wordpress/
+  mysql_volume:
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: /home/bmaegan/data/mariadb/
+
 
 networks:
-  app-network:
-    driver: bridge
-
+    inception:
+        driver: bridge

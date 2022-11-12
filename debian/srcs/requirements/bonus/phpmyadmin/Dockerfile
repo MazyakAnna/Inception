@@ -1,28 +1,26 @@
 # man: https://wiki.alpinelinux.org/wiki/PhpMyAdmin
-FROM alpine:3.16
+FROM debian:buster
+
+RUN apt-get update -y && apt-get upgrade -y
 
 ARG PMA_HOST
 
-RUN apk update && apk upgrade && apk add --no-cache \
-    php8 \
-    php8-common \
-    php8-session \
-    php8-iconv \
-    php8-gd \
-    php8-curl \
-    php8-xml \
-    php8-mysqli \
-    php8-imap \
-    php8-cgi \
-    php8-pdo \
-    php8-pdo_mysql \
-    php8-soap \
-    php8-posix \
-    php8-gettext \
-    php8-ldap \
-    php8-ctype \
-    php8-dom \
-    php8-simplexml \
+RUN apt-get install -y \
+    php7.3 \
+    php-gd \
+    php-curl \
+    php-xml \
+    php-mysqli \
+    php-imap \
+    php-cgi \
+    php-pdo \
+    php-soap \
+    php-posix \
+    php-gettext \
+    php-ldap \
+    php-ctype \
+    php-dom \
+    php-simplexml \
     wget
 
 WORKDIR /var/www/html

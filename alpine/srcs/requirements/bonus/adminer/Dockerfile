@@ -22,11 +22,11 @@ RUN apk update && apk upgrade && apk add --no-cache \
     php8-simplexml \
     wget
 
-WORKDIR /var/www
+WORKDIR /var/www/html
 
 RUN wget https://github.com/vrana/adminer/releases/download/v4.8.1/adminer-4.8.1.php && \
-    mv adminer-4.8.1.php index.php && chown -R root:root /var/www/
+    mv adminer-4.8.1.php index.php && chown -R root:root /var/www//html
 
 EXPOSE 8080
 
-CMD	[ "php", "-S", "[::]:8080", "-t", "/var/www" ]
+CMD	[ "php", "-S", "[::]:8080", "-t", "/var/www/html" ]

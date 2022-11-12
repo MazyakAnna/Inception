@@ -1,7 +1,50 @@
+# https://wordpress.org/support/article/how-to-install-wordpress/
+# https://wiki.alpinelinux.org/wiki/WordPress
+# https://wordpress.org/support/article/creating-database-for-wordpress/#using-the-mysql-client
+# https://wp-cli.org/
+# https://developer.wordpress.org/cli/commands/
+
 FROM debian:buster
 
-RUN apt-get update && apt-get upgrade -y
+RUN apt update -y && apt upgrade -y
 
-RUN apt-get -y install wordpress
+EXPOSE 9000
 
-EXPOSE 80
+RUN apt install -y \
+    php7.3 \
+    php-fpm \
+    php-mysqli \
+    php-json \
+    php-curl \
+    php-dom \
+    php-exif \
+    php-fileinfo \
+    php-mbstring \
+    php-xml \
+    php-zip \
+    mariadb-client \
+    php-redis \
+    php-phar \
+    curl && \
+    rm -f /var/cache/apk/* && \
+    curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
+    # php wp-cli.phar --info
+    chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp && \
+    mkdir -p /var/log/php-fpm && mkdir -m 777 -p /var/www/html/wordpress && \
+    wp core download --path='/var/www/html/wordpress' --allow-root
+
+    COPY ./tools/create_wpsite.sh /tmp/tools/create_wpsite.sh
+    COPY ./conf/* /tmp/conf/
+
+   RUN sed -i "s|listen = /run/php/php7.3-fpm.sock|listen = 9000|g" /etc/php/7.3/fpm/pool.d/www.conf && \
+#sed -i "s|listen = 127.0.0.1:9000|listen = 9000|g" /etc/php/7.3/fpm/pool.d/www.conf && \
+       sed -i "s|;listen.owner = nobody|listen.owner = nobody|g" /etc/php/7.3/fpm/pool.d/www.conf && \
+        sed -i "s|;listen.group = nobody|listen.group = nobody|g" /etc/php/7.3/fpm/pool.d/www.conf
+        # sed -i "s|;daemonize = yes|daemonize = no|g" /etc/php8/php-fpm.conf && \
+
+
+WORKDIR /var/www/html/
+ENTRYPOINT  ["sh", "/tmp/tools/create_wpsite.sh"]
+
+#   -F flag = no demonize
+# ENTRYPOINT ["/usr/sbin/php-fpm", "-F"]

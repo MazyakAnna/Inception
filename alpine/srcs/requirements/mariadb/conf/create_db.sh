@@ -1,40 +1,54 @@
-#!bin/sh
+#!/bin/sh
 
-if [ ! -d "/var/lib/mysql/mysql" ]; then
-
-        chown -R mysql:mysql /var/lib/mysql
-
-        # mysql_install_db initializes the MySQL data directory 
-	#     and creates the system tables that it contains, if they do not exist
-	# --user: user that mysqld (mysql server) runs as
-	# --basedir: installation dir; --datadir: data dir;
-        mysql_install_db --user=mysql \
-		--basedir=/usr \
-		--datadir=/var/lib/mysql \
-	#	--rpm
-
-        tfile=`mktemp`
-        if [ ! -f "$tfile" ]; then
-                return 1
-        fi
+echo "Check mysqld dir"
+if [ -d "/run/mysqld" ]; then
+	chown -R mysql:mysql /run/mysqld
+else
+	mkdir -p /run/mysqld
+	chown -R mysql:mysql /run/mysqld
 fi
 
-if [ ! -d "/var/lib/mysql/wordpress" ]; then
+echo "Check dir with initial DBs"
+if [ -d /var/lib/mysql/mysql ]; then
+	chown -R mysql:mysql /var/lib/mysql
+else
+	chown -R mysql:mysql /var/lib/mysql
+	mysql_install_db --user=mysql --ldata=/var/lib/mysql > /dev/null
 
-        cat << EOF > /tmp/create_db.sql
-USE mysql;
-FLUSH PRIVILEGES;
-DELETE FROM     mysql.user WHERE User='';
-DROP DATABASE test;
-DELETE FROM mysql.db WHERE Db='test';
-DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
-ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_ROOT_PWD}';
-CREATE DATABASE wordpress;
-CREATE USER '${DB_USER}'@'%' IDENTIFIED by '${DB_PWD}';
-GRANT ALL PRIVILEGES ON wordpress.* TO '${DB_USER}'@'%';
-FLUSH PRIVILEGES;
+	sql_script=`mktemp`
+	if [ ! -f "$sql_script" ]; then
+	    return 1
+	fi
+
+	echo "start writing"
+	cat << EOF > $sql_script
+USE mysql ;
+FLUSH PRIVILEGES ;
+CREATE DATABASE IF NOT EXISTS $MYSQL_DATABASE CHARACTER SET utf8 COLLATE utf8_general_ci ;
+
+GRANT ALL ON *.* TO 'root'@'%' identified by '$MYSQL_ROOT_PASSWORD' WITH GRANT OPTION ;
+GRANT ALL ON *.* TO 'root'@'localhost' identified by '$MYSQL_ROOT_PASSWORD' WITH GRANT OPTION ;
+SET PASSWORD FOR 'root'@'localhost'=PASSWORD('${MYSQL_ROOT_PASSWORD}') ;
+SET PASSWORD FOR 'root'@'%'=PASSWORD('${MYSQL_ROOT_PASSWORD}') ;
+FLUSH PRIVILEGES ;
+
+CREATE USER '$MYSQL_USER'@'localhost' IDENTIFIED BY '$MYSQL_PASSWORD';
+CREATE USER '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';
+GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'localhost';
+GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'%';
+FLUSH PRIVILEGES ;
 EOF
-        # run init.sql
-        /usr/bin/mysqld --user=mysql --bootstrap < /tmp/create_db.sql
-        rm -f /tmp/create_db.sql
+
+	cat $sql_script -e
+	cat << EOF > /etc/my.cnf.d/mariadb-server.cnf
+[mysqld]
+skip-host-cache
+skip-name-resolve
+bind-address=0.0.0.0
+port = 3306
+EOF
+
+	/usr/bin/mysqld --user=mysql --bootstrap --verbose=0 --skip-name-resolve --skip-networking=0 < $sql_script
+	rm -f $sql_script
 fi
+

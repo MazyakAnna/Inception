@@ -1,7 +1,28 @@
+# https://wordpress.org/support/article/how-to-install-wordpress/
+# https://wiki.alpinelinux.org/wiki/WordPress
+# https://wordpress.org/support/article/creating-database-for-wordpress/#using-the-mysql-client
+# https://wp-cli.org/
+# https://developer.wordpress.org/cli/commands/
+
 FROM alpine:3.16
-ARG WP_DB_NAME \
-    DB_USER \
-    DB_PWD
+
+# ARG WORDPRESS_DB_HOST \
+#     WORDPRESS_DB_NAME \
+#     WORDPRESS_DB_USER \
+#     WORDPRESS_DB_PASSWORD \
+#     WORDPRESS_TABLE_PREFIX \
+#     DOMAIN_NAME \
+#     WORDPRESS_TITLE \
+#     WORDPRESS_ADMIN_USER \
+#     WORDPRESS_ADMIN_PASSWORD \
+#     REDIS_PASSWORD \
+#     REDIS_HOST \
+#     MYSQL_PORT \
+#     FPR_PORT
+
+EXPOSE 9000
+
+
 RUN apk update && apk upgrade && apk add --no-cache \
     php8 \
     php8-fpm \
@@ -15,22 +36,29 @@ RUN apk update && apk upgrade && apk add --no-cache \
     php8-openssl \
     php8-xml \
     php8-zip \
+    mariadb-client \
     php8-redis \
-    wget \
-    unzip && \
-    sed -i "s|listen = 127.0.0.1:9000|listen = 9000|g" \
-      /etc/php8/php-fpm.d/www.conf && \
-    sed -i "s|;listen.owner = nobody|listen.owner = nobody|g" \
-      /etc/php8/php-fpm.d/www.conf && \
-    sed -i "s|;listen.group = nobody|listen.group = nobody|g" \
-      /etc/php8/php-fpm.d/www.conf && \
-    rm -f /var/cache/apk/*
-WORKDIR /var/www
-RUN wget https://wordpress.org/latest.zip && \
-    unzip latest.zip && \
-    cp -rf wordpress/* . && \
-    rm -rf wordpress latest.zip
-COPY ./requirements/wordpress/conf/wp-config-create.sh .
-RUN sh wp-config-create.sh && rm wp-config-create.sh && \
-    chmod -R 0777 wp-content/
-CMD ["/usr/sbin/php-fpm8", "-F"]
+    php8-phar \
+    curl && \
+    rm -f /var/cache/apk/* && \
+    curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
+    # php wp-cli.phar --info
+    chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp && \
+    # wp core download  --allow-root && \
+    mkdir -p /var/log/php-fpm && mkdir -m 777 -p /var/www/html/wordpress && \
+    wp core download --path='/var/www/html/wordpress' --allow-root
+
+    COPY ./tools/create_wpsite.sh /tmp/tools/create_wpsite.sh
+    COPY ./conf/* /tmp/conf/
+
+    RUN sed -i "s|listen = 127.0.0.1:9000|listen = 9000|g" /etc/php8/php-fpm.d/www.conf && \
+        sed -i "s|;listen.owner = nobody|listen.owner = nobody|g" /etc/php8/php-fpm.d/www.conf && \
+        sed -i "s|;listen.group = nobody|listen.group = nobody|g" /etc/php8/php-fpm.d/www.conf
+        # sed -i "s|;daemonize = yes|daemonize = no|g" /etc/php8/php-fpm.conf && \
+
+
+WORKDIR /var/www/html/
+ENTRYPOINT    ["sh", "/tmp/tools/create_wpsite.sh"]
+
+#   -F flag = no demonize
+# ENTRYPOINT ["/usr/sbin/php-fpm8", "-F"]
