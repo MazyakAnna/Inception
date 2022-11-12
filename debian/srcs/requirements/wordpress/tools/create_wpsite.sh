@@ -26,6 +26,7 @@ PHP
     wp db import /tmp/conf/exported_database.sql --path='/var/www/html//wordpress' --allow-root;
     wp user create "$WORDPRESS_USER" "$WORDPRESS_USER_EMAIL" --role=author --user_pass="$WORDPRESS_USER_PASSWORD"  --path="/var/www/html/wordpress" --allow-root;
     wp user create "$WORDPRESS_ADMIN_USER" "$WORDPRESS_ADMIN_EMAIL" --role=administrator --user_pass="$WORDPRESS_ADMIN_PASSWORD" --path="/var/www/html/wordpress" --allow-root;
+    sed -i 's|<h1 class="alignwide" style="margin-bottom:var(--wp--preset--spacing--60)">Mindblown: a blog about philosophy.</h1>|<h1 class="alignwide" style="margin-bottom:var(--wp--preset--spacing--60)">WOW! Look! This Inception project is working!</h1>|g' /var/www/html/wordpress/wp-content/themes/twentytwentythree/templates/home.html
 
 # install redis plagin
     wp plugin install redis-cache --activate --allow-root
