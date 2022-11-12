@@ -129,7 +129,11 @@ services:
   #   restart: always
 
   ftpserver:
-    build: requirements/bonus/ftpserver
+    build: 
+      context: requirements/bonus/ftpserver
+      args:
+        FTP_USER: bmaegan
+        FTP_PASSWORD: 123
     container_name: ftpserver
     ports:
       - "21:21"
