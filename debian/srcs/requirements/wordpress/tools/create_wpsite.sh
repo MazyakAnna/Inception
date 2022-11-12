@@ -43,7 +43,7 @@ PHP
     wp plugin activate redis-cache --allow-root
     echo "redist activated"
 fi
-# wp redis-cache enable --allow-root
+wp redis-cache enable --allow-root
 
 echo "Wordpress config: OK"
 php-fpm7.3 -F
