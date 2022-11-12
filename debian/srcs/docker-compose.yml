@@ -112,21 +112,34 @@ services:
       - 80:80
     restart: always
 
+  # ftpserver:
+  #   container_name: ftpserver
+  #   build:
+  #     context: .
+  #     dockerfile: requirements/bonus/ftpserver/Dockerfile
+  #     args:
+  #       FTP_PASSWORD: ${MYSQL_PASSWORD}
+  #       FTP_USER: ${MYSQL_USER}
+  #   ports:
+  #     - "21:21" 
+  #   volumes:
+  #     - wp_volume:/var/www/html
+  #   networks:
+  #     - inception
+  #   restart: always
   ftpserver:
+    build: requirements/bonus/ftpserver
     container_name: ftpserver
-    build:
-      context: .
-      dockerfile: requirements/bonus/ftpserver/Dockerfile
-      args:
-        FTP_PASSWORD: ${MYSQL_PASSWORD}
-        FTP_USER: ${MYSQL_USER}
     ports:
-      - "21:21" 
+      - "21:21"
     volumes:
-      - wp_volume:/var/www/html
+      - wp:/var/www/html/wordpress
     networks:
-      - inception
+     - inception
     restart: always
+    environment:
+      FTP_USER: bmaegan
+      FTP_PASSWORD: 123
 
 volumes:
   wp_volume:
