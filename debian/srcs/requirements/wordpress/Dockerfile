@@ -1,5 +1,4 @@
 # https://wordpress.org/support/article/how-to-install-wordpress/
-# https://wiki.alpinelinux.org/wiki/WordPress
 # https://wordpress.org/support/article/creating-database-for-wordpress/#using-the-mysql-client
 # https://wp-cli.org/
 # https://developer.wordpress.org/cli/commands/
@@ -16,10 +15,10 @@ RUN apt install -y \
     php-mysqli \
     php-json \
     php-curl \
-    php-dom \
-    php-exif \
-    php-fileinfo \
-    php-mbstring \
+    # php-dom \
+    # php-exif \
+    # php-fileinfo \
+    # php-mbstring \
     php-xml \
     php-zip \
     mariadb-client \
@@ -37,14 +36,10 @@ RUN apt install -y \
     COPY ./conf/* /tmp/conf/
 
    RUN sed -i "s|listen = /run/php/php7.3-fpm.sock|listen = 9000|g" /etc/php/7.3/fpm/pool.d/www.conf && \
-#sed -i "s|listen = 127.0.0.1:9000|listen = 9000|g" /etc/php/7.3/fpm/pool.d/www.conf && \
        sed -i "s|;listen.owner = nobody|listen.owner = nobody|g" /etc/php/7.3/fpm/pool.d/www.conf && \
-        sed -i "s|;listen.group = nobody|listen.group = nobody|g" /etc/php/7.3/fpm/pool.d/www.conf
-        # sed -i "s|;daemonize = yes|daemonize = no|g" /etc/php8/php-fpm.conf && \
+       sed -i "s|;listen.group = nobody|listen.group = nobody|g" /etc/php/7.3/fpm/pool.d/www.conf
+       # sed -i "s|;daemonize = yes|daemonize = no|g" /etc/php/7.3/fpm/pool.d/www.conf && \
 
 
 WORKDIR /var/www/html/
 ENTRYPOINT  ["sh", "/tmp/tools/create_wpsite.sh"]
-
-#   -F flag = no demonize
-# ENTRYPOINT ["/usr/sbin/php-fpm", "-F"]
