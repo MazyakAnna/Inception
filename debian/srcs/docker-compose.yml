@@ -107,8 +107,7 @@ services:
   website:
     container_name: website
     build:
-      context: .
-      dockerfile: requirements/bonus/website/Dockerfile
+      context: ./requirements/bonus/website
     ports:
       - 80:80
     restart: always
