@@ -33,6 +33,4 @@ RUN echo "allow_writeable_chroot=YES" >> /etc/vsftpd.conf &&\
 WORKDIR /var/www/html
 
 EXPOSE 21
-#ENTRYPOINT tail -f
-
 ENTRYPOINT [ "/usr/sbin/vsftpd", "/etc/vsftpd.conf" ]
