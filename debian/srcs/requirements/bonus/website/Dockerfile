@@ -1,6 +1,5 @@
 FROM debian:buster
-RUN	apt-get update -y && apt-get upgrade -y
-RUN	apt-get install -y nginx
+RUN	apt-get update && apt-get install -y nginx
 
 RUN mkdir -p /var/www/html/mywebsite && \
     echo "server {" > /etc/nginx/sites-enabled/default && \

@@ -2,17 +2,15 @@
 # https://1cloud.ru/help/linux/kak-nastroit-vsftpd-ubuntu-12
 FROM debian:buster
 
-RUN apt-get update -y && apt-get upgrade -y
 
 ARG FTP_PASSWORD \
     FTP_USER
 
-RUN apt-get install -y vsftpd  && \
+RUN apt-get update && apt-get install -y vsftpd  && \
     mkdir -p /var/www/html/wordpress && \
     mkdir -p /var/run/vsftpd/empty
 
-RUN echo "EEEEEEEEEEEEE" && echo "$FTP_USER" && \
-    adduser --home /var/www/html --disabled-password $FTP_USER && \
+RUN adduser --home /var/www/html --disabled-password $FTP_USER && \
     echo "$FTP_USER:$FTP_PASSWORD" | /usr/sbin/chpasswd && \
     echo $FTP_USER >> /etc/vsftpd.userlist && \ 
     chown -R $FTP_USER:$FTP_USER /var/www/html

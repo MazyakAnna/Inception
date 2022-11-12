@@ -5,11 +5,9 @@
 
 FROM debian:buster
 
-RUN apt update -y && apt upgrade -y
-
 EXPOSE 9000
 
-RUN apt install -y \
+RUN apt-get update && apt-get install -y \
     php7.3 \
     php-fpm \
     php-mysqli \
@@ -28,13 +26,13 @@ RUN apt install -y \
     mkdir -p /var/log/php-fpm && mkdir -m 777 -p /var/www/html/wordpress && \
     wp core download --path='/var/www/html/wordpress' --allow-root
 
-    COPY ./tools/create_wpsite.sh /tmp/tools/create_wpsite.sh
-    COPY ./conf/* /tmp/conf/
+COPY ./tools/create_wpsite.sh /tmp/tools/create_wpsite.sh
+COPY ./conf/* /tmp/conf/
 
-   RUN sed -i "s|listen = /run/php/php7.3-fpm.sock|listen = 9000|g" /etc/php/7.3/fpm/pool.d/www.conf && \
-       sed -i "s|;listen.owner = nobody|listen.owner = nobody|g" /etc/php/7.3/fpm/pool.d/www.conf && \
-       sed -i "s|;listen.group = nobody|listen.group = nobody|g" /etc/php/7.3/fpm/pool.d/www.conf
-       # sed -i "s|;daemonize = yes|daemonize = no|g" /etc/php/7.3/fpm/pool.d/www.conf && \
+RUN sed -i "s|listen = /run/php/php7.3-fpm.sock|listen = 9000|g" /etc/php/7.3/fpm/pool.d/www.conf && \
+    sed -i "s|;listen.owner = nobody|listen.owner = nobody|g" /etc/php/7.3/fpm/pool.d/www.conf && \
+    sed -i "s|;listen.group = nobody|listen.group = nobody|g" /etc/php/7.3/fpm/pool.d/www.conf
+    # sed -i "s|;daemonize = yes|daemonize = no|g" /etc/php/7.3/fpm/pool.d/www.conf && \
 
 
 WORKDIR /var/www/html/

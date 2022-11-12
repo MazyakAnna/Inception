@@ -9,8 +9,7 @@ ARG MYSQL_DATABASE_NAME \
 
 EXPOSE 3306
 
-RUN apt-get update -y && apt-get upgrade -y
-RUN apt-get install mariadb-server -y
+RUN apt-get update && apt-get install -y mariadb-server
 
 COPY --chmod=777 ./conf/create_db.sh /tmp/create_db.sh
 

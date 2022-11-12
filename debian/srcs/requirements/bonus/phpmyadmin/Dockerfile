@@ -1,11 +1,9 @@
 # man: https://wiki.alpinelinux.org/wiki/PhpMyAdmin
 FROM debian:buster
 
-RUN apt-get update -y && apt-get upgrade -y
-
 ARG PMA_HOST
 
-RUN apt-get install -y \
+RUN apt-get update && apt-get install -y \
     php7.3 \
     php-gd \
     php-curl \
