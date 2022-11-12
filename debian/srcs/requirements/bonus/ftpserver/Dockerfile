@@ -11,16 +11,16 @@ RUN apt-get install -y vsftpd  && \
     mkdir -p /var/www/html/wordpress && \
     mkdir -p /var/run/vsftpd/empty
 
-# RUN adduser --home /var/www/html --disabled-password $FTP_USER && \
-#     echo "$FTP_USER:$FTP_PASSWORD" | /usr/sbin/chpasswd && \
-#     echo $FTP_USER >> /etc/vsftpd.userlist && \ 
-#     chown -R $FTP_USER:$FTP_USER /var/www/html
+RUN adduser --home /var/www/html --disabled-password $FTP_USER && \
+    echo "$FTP_USER:$FTP_PASSWORD" | /usr/sbin/chpasswd && \
+    echo $FTP_USER >> /etc/vsftpd.userlist && \ 
+    chown -R $FTP_USER:$FTP_USER /var/www/html
 
 
-RUN adduser $FTP_USER --disabled-password ;\
-	echo "$FTP_USER:$FTP_PASSWORD" | /usr/sbin/chpasswd &> /dev/null ;\
-	chown -R $FTP_USER:$FTP_USR /var/www/html/wordpress ;\
-	echo $FTP_USER | tee -a /etc/vsftpd.userlist &> /dev/null
+# RUN adduser $FTP_USER --disabled-password ;\
+# 	echo "$FTP_USER:$FTP_PASSWORD" | /usr/sbin/chpasswd &> /dev/null ;\
+# 	chown -R $FTP_USER:$FTP_USR /var/www/html/wordpress ;\
+# 	echo $FTP_USER | tee -a /etc/vsftpd.userlist &> /dev/null
 
 # RUN echo "anonymous_enable=NO" > /etc/vsftpd.conf && \
 #     echo "local_enable=YES" >> /etc/vsftpd.conf && \
