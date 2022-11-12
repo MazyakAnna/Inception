@@ -33,6 +33,7 @@ PHP
     wp plugin update --all --allow-root
 
 fi
+wp redis enable --allow-root
 
 echo "Wordpress config: OK"
 php-fpm7.3 -F
