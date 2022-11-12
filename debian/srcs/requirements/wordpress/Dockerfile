@@ -30,14 +30,14 @@ RUN apt install -y \
     curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && \
     # php wp-cli.phar --info
     chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp && \
-    # wp core download  --allow-root && \
     mkdir -p /var/log/php-fpm && mkdir -m 777 -p /var/www/html/wordpress && \
     wp core download --path='/var/www/html/wordpress' --allow-root
 
     COPY ./tools/create_wpsite.sh /tmp/tools/create_wpsite.sh
     COPY ./conf/* /tmp/conf/
 
-   RUN sed -i "s|listen = 127.0.0.1:9000|listen = 9000|g" /etc/php/7.3/fpm/pool.d/www.conf && \
+   RUN sed -i "s|listen = /run/php/php7.3-fpm.sock|listen = 9000|g" /etc/php/7.3/fpm/pool.d/www.conf && \
+#sed -i "s|listen = 127.0.0.1:9000|listen = 9000|g" /etc/php/7.3/fpm/pool.d/www.conf && \
        sed -i "s|;listen.owner = nobody|listen.owner = nobody|g" /etc/php/7.3/fpm/pool.d/www.conf && \
         sed -i "s|;listen.group = nobody|listen.group = nobody|g" /etc/php/7.3/fpm/pool.d/www.conf
         # sed -i "s|;daemonize = yes|daemonize = no|g" /etc/php8/php-fpm.conf && \
