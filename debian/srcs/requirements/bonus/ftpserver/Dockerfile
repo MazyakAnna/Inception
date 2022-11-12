@@ -7,13 +7,12 @@ RUN apt-get update -y && apt-get upgrade -y
 ARG FTP_PASSWORD \
     FTP_USER
 
-RUN apt-get install vsftpd -y && \
+RUN apt-get install -y vsftpd  && \
     mkdir -p /var/www/html
 
 RUN adduser --home /var/www/html --shell /bin/false --disabled-password $FTP_USER && \
     echo "$FTP_USER:$FTP_PASSWORD" | chpasswd && \
     echo $FTP_USER >> /etc/vsftpd.userlist && \ 
-    adduser $FTP_USER root && \
     chown -R $FTP_USER:$FTP_USER /var/www/html
 
 
